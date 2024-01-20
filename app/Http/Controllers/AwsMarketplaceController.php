@@ -71,7 +71,6 @@ class AwsMarketplaceController extends Controller
                 return redirect()->back()->with('error', 'Account not found. Please contact support if it persists');    
             }
             
-            dd($aws_customer);
             //Generate new Name
             $name = bin2hex(random_bytes(6));
             
