@@ -13,6 +13,7 @@
 																</div>
 												@endif
 												<form action="/aws/register" method="POST">
+													@csrf
 																<div class="form-group">
 																				<label for="email">Email Address</label>
 																				<input type="email" class="form-control" placeholder="Please enter your email address">
