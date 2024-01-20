@@ -47,7 +47,7 @@ class AWSCustomerCreated extends Mailable
         return new Content(
             view: 'email.aws_customer_created',
             with: [
-                'password' => $user->password
+                'password' => $this->user->password
             ]
         );
     }
