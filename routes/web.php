@@ -276,3 +276,4 @@ Route::get('/pricing', [PricingController::class, 'index']);
 
 //-------------------------------AWS-------------------------------------------
 Route::get('/aws/register', [AwsMarketplaceController::class, 'register']);
+Route::post('/aws/register', [AwsMarketplaceController::class, 'registerCustomer']);
