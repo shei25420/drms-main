@@ -70,10 +70,14 @@ class AwsMarketplaceController extends Controller
             if (!$aws_customer) {
                 return redirect()->back()->with('error', 'Account not found. Please contact support if it persists');    
             }
-
+            
+            //Generate new Name
+            $name = bin2hex(random_bytes(6));
+            
+            //Generate new password
             $password = bin2hex(random_bytes(8));
             $user = User::create([
-                'name' => $request->name,
+                'name' => $name,
                 'email' => $request->email,
                 'password' => Hash::make($password),
                 'type' => 'admin',
