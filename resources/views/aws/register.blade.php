@@ -32,7 +32,7 @@
                     {{ __('An email has been sent with your account deatils.') }}
                 </div>
             @endif
-            <form id="aws-register-form">
+            <form id="aws-register-form" method="POST">
                 @csrf
                 <div class="form-group">
                     <label for="email">Email Address</label>
