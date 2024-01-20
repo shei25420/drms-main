@@ -19,7 +19,7 @@ class AWSCustomerCreated extends Mailable
      *
      * @return void
      */
-    public function __construct(protected User $user)
+    public function __construct(protected string $password)
     {
         //
     }
@@ -47,7 +47,7 @@ class AWSCustomerCreated extends Mailable
         return new Content(
             view: 'email.aws_customer_created',
             with: [
-                'password' => $this->user->password
+                'password' => $this->password
             ]
         );
     }

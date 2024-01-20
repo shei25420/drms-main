@@ -101,7 +101,7 @@ class AwsMarketplaceController extends Controller
             $user->assignRole($role_r);
             // Auth::login($user);
 
-            Mail::to($user)->send(new AWSCustomerCreated($user));
+            Mail::to($user)->send(new AWSCustomerCreated($password));
             return redirect()->back()->with('success', 'Please check you email for account information');
         } catch (\Throwable $th) {
             //throw $th;
