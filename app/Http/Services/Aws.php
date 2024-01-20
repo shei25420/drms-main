@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Services;
 use Aws\Sns\SnsClient;
+use Aws\Credentials\Credentials;
 use Aws\MarketplaceMetering\MarketplaceMeteringClient;
 use Aws\MarketplaceEntitlementService\MarketplaceEntitlementServiceClient;
 
@@ -9,52 +10,49 @@ class Aws {
     public $entitlement_client;
     public $sns_client;
 
-    private $topicArn = 'arn:aws:sns:your_region:your_account_id:your_entitlement_topic';
+    private $topicArn = 'arn:aws:sns:us-east-1:287250355862:aws-mp-entitlement-notification-7w2tdzvezserja2thdy0odte6';
     private $endpoint;
     
     public function __construct() {
-        $this->endpoint = url("/aws/entitlement/web-hook");
+        try {
+            // $this->endpoint = url("/aws/entitlement/web-hook");
+            $this->endpoint = "https://5ba5-196-202-162-46.ngrok-free.app/api/aws/entitlement/web-hook";
+            $credentials = new Credentials(env('AWS_ACCESS_KEY_ID'), env('AWS_SECRET_ACCESS_KEY'));
+            $this->metering_client = new MarketplaceMeteringClient([
+                'version' => 'latest',
+                'region' => 'us-east-1',
+                'credentials' => $credentials,
+            ]);
 
-        $this->metering_client = new MarketplaceMeteringClient([
-            'version' => 'latest',
-            'region' => 'us-east-1',
-            'credentials' => [
-                'key' => env('AWS_ACCESS_KEY_ID'),
-                'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            ],
-        ]);
+            $this->entitlement_client = new MarketplaceEntitlementServiceClient([
+                'version' => 'latest',
+                'region' => 'us-east-1',
+                'credentials' => $credentials,
+            ]);
 
-        $this->entitlement_client = new MarketplaceEntitlementServiceClient([
-            'version' => '2017-01-11',
-            'region' => 'latest',
-            'credentials' => [
-                'key' => env('AWS_ACCESS_KEY_ID'),
-                'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            ],
-        ]);
+            $this->sns_client = new SnsClient([
+                // 'profile' => 'default',
+                'region' => 'us-east-1',
+                'version' => 'latest',
+                'credentials' => $credentials
+            ]);
+            
 
-        $this->sns_client = new SnsClient([
-            'profile' => 'default',
-            'region' => 'us-east-1',
-            'version' => 'latest',
-            'credentials' => [
-                'key' => env('AWS_ACCESS_KEY_ID'),
-                'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            ],
-        ]);
-
-        $this->sns_client->subscribe([
-            'Protocol' => 'http',
-            'Endpoint' => $this->endpoint,
-            'TopicArn' => $this->topic
-        ]);
+            $this->sns_client->subscribe([
+                'Protocol' => 'https',
+                'Endpoint' => $this->endpoint,
+                'TopicArn' => $this->topicArn
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            dd("AWS Constructor Error", $th);
+        }
     }
 
-    public function resolveCustomer($token) {        
+    public function resolveCustomer($token) {       
         $result = $this->metering_client->resolveCustomer([
             'RegistrationToken' => $token,
         ]);
-
         return $result;
     }
 

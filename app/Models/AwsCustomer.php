@@ -9,5 +9,5 @@ class AwsCustomer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['subscription_id', 'email', 'customer_id', 'user_id'];
+    protected $fillable = ['subscription_id', 'email', 'customer_id', 'user_id', 'expiry_date'];
 }

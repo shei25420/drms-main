@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
+use App\Http\Services\Aws;
 use App\Models\AwsCustomer;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use App\Http\Services\Billing;
 use App\Models\StripeCustomer;
 use App\Mail\AWSCustomerCreated;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Models\AwsMarketplaceCustomer;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,39 +26,36 @@ class AwsMarketplaceController extends Controller
     public function resolveCustomer (Request $request) {
         try {
             $validate = Validator::make($request->all(), [
-                'token' => 'required',
+                'x-amzn-marketplace-token' => 'required',
             ]);
         
             if ($validate->fails()) {
                 return redirect()->back()->with('error', $messages->first());
             }
-        
-            $customer_results = \app(Aws::class)->resolveCustomer($request->token);
             
-            if (!(AWSMarketplaceCustomer::where('customer_id', $customer_results['CustomerIdentifier'])->first())) {
-                AwsMarketplaceCustomer::create([
-                    'customer_id' => $customer_results['CustomerIdentifier'],
-                    'product_code' => $customer_results['ProductCode'],
-                    'customer_aws_account_id' => $customer_results['CustomerAWSAccountId']
-                ]);
-            }            
+            $customer_results = \app(Aws::class)->resolveCustomer($request['x-amzn-marketplace-token']);
+            if (!$customer_results || !isset($customer_results['CustomerIdentifier'])) {
+                throw new Exception("Error resolving customer");
+            }
 
             $entitlement_results = \app(Aws::class)->getEntitlements($customer_results['CustomerIdentifier'], $customer_results['ProductCode']);
             if (!count($entitlement_results['Entitlements'])) {
                 return redirect()->back()->with('error', 'Could not find an active subscription. If you already registered please try again');    
             }
-            
+
             $subscription = Subscription::where('name', $entitlement_results['Entitlements'][0]['Dimension'])->first();
+            if (!(AWSCustomer::where('customer_id', $customer_results['CustomerIdentifier'])->first())) {
+                AwsCustomer::create([
+                    'subscription_id' => $subscription->id,
+                    'customer_id' => $entitlement_results['Entitlements'][0]['CustomerIdentifier'],
+                    'expiry_date' => $entitlement_results['Entitlements'][0]['ExpirationDate']
+                ]);
+            } 
 
-            AwsCustomer::create([
-                'subscription_id' => $subscription->id,
-                'customer_id' => $customer_results['CustomerIdentifier'],
-                'expiry_date' => $customer_results['ExpirationDate']
-            ]);
-
-            return redirect(`/aws/register?customer_id=${$customer_results['CustomerIdentifier']}`);
+            return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
         } catch (\Throwable $th) {
             //throw $th;
+            dd($th);
             return redirect()->back()->with('error', 'Something went wrong, please try again later.');
         }
     }
@@ -106,38 +105,47 @@ class AwsMarketplaceController extends Controller
 
     public function handleNotification(Request $request)
     {
-        $message = json_decode($request->getContent(), true);
-
-        $customerIdentifier = $message['Message']['CustomerIdentifier'];
-        $productCode = $message['Message']['ProductCode'];
-        $entitlementStatus = $message['Message']['EntitlementStatus'];
-        $expiryDate = $message['Message']['ExpiryDate'];
-
-        $aws_customer = AwsCustomer::where('customer_id', $customerIdentifier)->first();
-        if (!$aws_customer) {
-            http_response_code(404);
-            return;
-        }
-
-        $user = User::find($aws_customer->user_id);
-        // Handle subscription changes based on status
-        switch ($entitlementStatus) {
-            case 'Cancelled':
-                $user->subscription = null;
-                break;
-            case 'Renewed':
-                $user->subscription_expire_date = $expiryDate = $message['Message']['ExpiryDate'];
-                // Handle renewed subscription
-                break;
-            case 'Expired':
-                $user->subscription = null;
-                // Handle expired subscription
-                break;
+        $data = json_decode($request->getContent(), true);
+        switch ($data['Type']) {
+            case 'SubscriptionConfirmation':
+                Log::debug("Subscription Confirmation Test Working!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                break;     
             default:
-                http_response_code(404);
-                return;
+                Log::debug($data);
+                Log::debug("Message type not handled: ${$data['type']}");
+                break;
         }
-        $user->save();
+
+        // $customerIdentifier = $message['Message']['CustomerIdentifier'];
+        // $productCode = $message['Message']['ProductCode'];
+        // $entitlementStatus = $message['Message']['EntitlementStatus'];
+        // $expiryDate = $message['Message']['ExpiryDate'];
+
+        // $aws_customer = AwsCustomer::where('customer_id', $customerIdentifier)->first();
+        // if (!$aws_customer) {
+        //     http_response_code(404);
+        //     return;
+        // }
+
+        // $user = User::find($aws_customer->user_id);
+        // // Handle subscription changes based on status
+        // switch ($entitlementStatus) {
+        //     case 'Cancelled':
+        //         $user->subscription = null;
+        //         break;
+        //     case 'Renewed':
+        //         $user->subscription_expire_date = $expiryDate = $message['Message']['ExpiryDate'];
+        //         // Handle renewed subscription
+        //         break;
+        //     case 'Expired':
+        //         $user->subscription = null;
+        //         // Handle expired subscription
+        //         break;
+        //     default:
+        //         http_response_code(404);
+        //         return;
+        // }
+        // $user->save();
         http_response_code(200);
     }
 }

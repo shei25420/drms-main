@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/aws/register', [AwsMarketplaceController::class, 'resolveCustomer']);
+Route::post('/aws/entitlement/web-hook', [AwsMarketplaceController::class, 'handleNotification']);
