@@ -83,7 +83,7 @@ class AwsMarketplaceController extends Controller
                 'password' => Hash::make($password),
                 'type' => 'admin',
                 'lang' => 'english',
-                'subscription_id' => $aws_customer->subscription_id,
+                'subscription' => $aws_customer->subscription_id,
                 'subscription_expire_date' => $aws_customer->expiry_date,
                 'email_verified_at' => now()
             ]);
