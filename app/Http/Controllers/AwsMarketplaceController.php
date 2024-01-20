@@ -13,6 +13,7 @@ use App\Models\StripeCustomer;
 use App\Mail\AWSCustomerCreated;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
