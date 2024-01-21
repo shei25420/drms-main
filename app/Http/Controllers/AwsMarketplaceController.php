@@ -10,14 +10,15 @@ use App\Models\Subscription;
 use Illuminate\Http\Request;
 use App\Http\Services\Billing;
 use App\Models\StripeCustomer;
+use App\Http\Helpers\AwsHelper;
 use App\Mail\AWSCustomerCreated;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
-use Spatie\Permission\Models\Role;
 
 
 class AwsMarketplaceController extends Controller
@@ -41,24 +42,16 @@ class AwsMarketplaceController extends Controller
                 throw new Exception("Error resolving customer");
             }
 
-            $entitlement_results = \app(Aws::class)->getEntitlements($customer_results['CustomerIdentifier'], $customer_results['ProductCode']);
+            $entitlement_results = \app(Aws::class)->getCustomerEntitlements($customer_results['CustomerIdentifier'], $customer_results['ProductCode']);
             if (!count($entitlement_results['Entitlements'])) {
                 return redirect()->back()->with('error', 'Could not find an active subscription. If you already registered please try again');    
             }
 
-            $subscription = Subscription::where('name', $entitlement_results['Entitlements'][0]['Dimension'])->first();
-            if (!(AWSCustomer::where('customer_id', $customer_results['CustomerIdentifier'])->first())) {
-                AwsCustomer::create([
-                    'subscription_id' => $subscription->id,
-                    'customer_id' => $entitlement_results['Entitlements'][0]['CustomerIdentifier'],
-                    'expiry_date' => $entitlement_results['Entitlements'][0]['ExpirationDate']
-                ]);
-            } 
-
+            AwsHelper::handleActiveSubscription($customer_results['CustomerIdentifier'], $entitlement_results['Entitlements'][0]['Dimension']);
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th);
+            dd($th->getMessage(), $th->getCode());
             return redirect()->back()->with('error', 'Something went wrong, please try again later.');
         }
     }
@@ -105,7 +98,7 @@ class AwsMarketplaceController extends Controller
             return redirect()->back()->with('success', 'Please check you email for account information');
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th);
+            dd($th->getMessage(), $th->getCode());
             return redirect()->back()->with('error', 'Something went wrong, please try again later.');
         }
     }
@@ -113,46 +106,48 @@ class AwsMarketplaceController extends Controller
     public function handleNotification(Request $request)
     {
         $data = json_decode($request->getContent(), true);
+        Log::debug($data);
         switch ($data['Type']) {
             case 'SubscriptionConfirmation':
                 Log::debug("Subscription Confirmation Test Working!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 break;     
+            case 'EntitlementNotification':
+                $results = \app(Aws::class)->getAllEntitlements();
+                foreach ($result['Entitlements'] as $entitlement) {
+                    switch ($entitlement['Status']) {
+                        case 'ACTIVE':
+                            // Handle new or upgraded entitlement
+                            AwsHelper::handleActiveSubscription($entitlement['CustomerIdentifier'], $entitlement['Dimension']);
+                            break;
+                        case 'PENDING':
+                            // Handle pending entitlement (usually renewal)
+                            AwsHelper::handlePendingSubscription($entitlement['CustomerIdentifier']);
+                            break;
+                        case 'EXPIRED':
+                            // Handle expired entitlement
+                            AwsHelper::handleUnsubscribe($entitlement['CustomerIdentifier']);
+                            break;
+                        case 'SUSPENDED':
+                            // Handle suspended entitlement
+                            AwsHelper::handleUnsubscribe($entitlement['CustomerIdentifier']);
+                            break;
+                        case 'TERMINATED':
+                            AwsHelper::handleUnsubscribe($entitlement['CustomerIdentifier']);
+                            // Handle terminated entitlement
+                            break;
+                        case 'CANCELLED':
+                            AwsHelper::handleUnsubscribe($entitlement['CustomerIdentifier']);
+                            // Handle cancelled entitlement
+                            break;
+                    }
+                }
+                Log::debug("Entitlement notification Test Working!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                break;
             default:
-                Log::debug($data);
                 Log::debug("Message type not handled: ${$data['type']}");
                 break;
         }
 
-        // $customerIdentifier = $message['Message']['CustomerIdentifier'];
-        // $productCode = $message['Message']['ProductCode'];
-        // $entitlementStatus = $message['Message']['EntitlementStatus'];
-        // $expiryDate = $message['Message']['ExpiryDate'];
-
-        // $aws_customer = AwsCustomer::where('customer_id', $customerIdentifier)->first();
-        // if (!$aws_customer) {
-        //     http_response_code(404);
-        //     return;
-        // }
-
-        // $user = User::find($aws_customer->user_id);
-        // // Handle subscription changes based on status
-        // switch ($entitlementStatus) {
-        //     case 'Cancelled':
-        //         $user->subscription = null;
-        //         break;
-        //     case 'Renewed':
-        //         $user->subscription_expire_date = $expiryDate = $message['Message']['ExpiryDate'];
-        //         // Handle renewed subscription
-        //         break;
-        //     case 'Expired':
-        //         $user->subscription = null;
-        //         // Handle expired subscription
-        //         break;
-        //     default:
-        //         http_response_code(404);
-        //         return;
-        // }
-        // $user->save();
         http_response_code(200);
     }
 }

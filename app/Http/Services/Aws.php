@@ -16,7 +16,7 @@ class Aws {
     public function __construct() {
         try {
             // $this->endpoint = url("/aws/entitlement/web-hook");
-            $this->endpoint = "https://5ba5-196-202-162-46.ngrok-free.app/api/aws/entitlement/web-hook";
+            $this->endpoint = "https://533f-196-202-162-46.ngrok-free.app/api/aws/entitlement/web-hook";
             $credentials = new Credentials(env('AWS_ACCESS_KEY_ID'), env('AWS_SECRET_ACCESS_KEY'));
             $this->metering_client = new MarketplaceMeteringClient([
                 'version' => 'latest',
@@ -56,7 +56,11 @@ class Aws {
         return $result;
     }
 
-    public function getEntitlements($customer_id, $product_code) {
+    public function getAllEntitlements () {
+        return $this->entitlement_client->getEntitlements();
+    }
+
+    public function getCustomerEntitlements($customer_id, $product_code) {
         $result = $this->entitlement_client->getEntitlements([
             'CustomerIdentifier' => $customer_id,
             'ProductCode' => $product_code,
