@@ -257,7 +257,7 @@ class SettingController extends Controller
             if($request->logo)
             {
                 $logoName = \Auth::user()->id . '_logo.png';
-                $path     = $request->file('logo')->storeAs('upload/logo/', $logoName);
+                $path     = $request->file('logo')->storePubliclyAs('/upload/logo', $logoName, 'public');
 
                 \DB::insert(
                     'insert into settings (`value`, `name`,`parent_id`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ', [
@@ -273,7 +273,7 @@ class SettingController extends Controller
             if($request->favicon)
             {
                 $logoName = \Auth::user()->id . '_favicon.png';
-                $path     = $request->file('favicon')->storeAs('upload/logo/', $logoName);
+                $path     = $request->file('favicon')->storePubliclyAs('/upload/logo', $logoName, 'public');
 
                 \DB::insert(
                     'insert into settings (`value`, `name`,`parent_id`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ', [
