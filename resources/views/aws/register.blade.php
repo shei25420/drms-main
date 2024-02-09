@@ -28,11 +28,6 @@
             <div class="auth-icon"><i class="fa fa-unlock-alt"></i></div>
             <h3>{{ __('Create Account') }}</h3>
             <p>An Email With your login details will be sent to your email address</p>
-            @if (session('success'))
-                <div class="alert alert-success" role="alert">
-                    {{ __('An email has been sent with your account deatils.') }}
-                </div>
-            @endif
             <form id="aws-register-form" method="POST">
                 @csrf
                 <div class="form-group">
@@ -42,6 +37,11 @@
                     <button type="submit" class="btn btn-primary btn-sm">Create Account</button>
                 </div>
             </form>
+            @if (session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ __('An email has been sent with your account deatils.') }}
+                </div>
+            @endif
         </div>
         <div class="auth-footer">
         </div>
