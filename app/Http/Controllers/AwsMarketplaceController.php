@@ -119,7 +119,7 @@ class AwsMarketplaceController extends Controller
                     switch ($entitlement['Status']) {
                         case 'ACTIVE':
                             // Handle new or upgraded entitlement
-                            AwsHelper::handleActiveSubscription($entitlement['CustomerIdentifier'], $entitlement['Dimension']);
+                            AwsHelper::handleActiveSubscription($entitlement['CustomerIdentifier'], $entitlement['Dimension'], $entitlement['ExpirationDate']);
                             break;
                         case 'PENDING':
                             // Handle pending entitlement (usually renewal)
