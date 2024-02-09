@@ -4,7 +4,7 @@
     <title>{{env('APP_NAME')}}</title>
 </head>
 <body>
-<p>Dear {{$name}},
+<p>Dear Sir/Madam,
 
     Welcome to {{env('APP_NAME')}} Vault! We're thrilled to have you on board and excited for the journey ahead. Thank you for choosing our platform to manage your documents.
     
