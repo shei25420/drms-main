@@ -47,7 +47,7 @@ class AwsMarketplaceController extends Controller
                 return redirect()->back()->with('error', 'Could not find an active subscription. If you already registered please try again');    
             }
 
-            AwsHelper::handleActiveSubscription($customer_results['CustomerIdentifier'], $entitlement_results['Entitlements'][0]['Dimension']);
+            AwsHelper::handleActiveSubscription($customer_results['CustomerIdentifier'], $entitlement_results['Entitlements'][0]['Dimension'], $entitlement_results['Entitlements'][0]['ExpirationDate']);
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
         } catch (\Throwable $th) {
             //throw $th;

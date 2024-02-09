@@ -8,7 +8,7 @@ use App\Models\AwsCustomer;
 use App\Models\Subscription;
 
 class AwsHelper {
-    public static function handleActiveSubscription ($customerId, $dimension) {
+    public static function handleActiveSubscription ($customerId, $dimension, $expiryDate) {
         $subscription = Subscription::where('name', $dimension)->first();
         if (!$subscription) throw new Error("Could not find a package with provided dimensions");
         
@@ -16,8 +16,8 @@ class AwsHelper {
         if (!$aws_customer) {
             $aws_customer = AwsCustomer::create([
                 'subscription_id' => $subscription->id,
-                'customer_id' => $entitlement_results['Entitlements'][0]['CustomerIdentifier'],
-                'expiry_date' => $entitlement_results['Entitlements'][0]['ExpirationDate']
+                'customer_id' => $customerId,
+                'expiry_date' => $expiryDate
             ]);
         } else if ($aws_customer->subscription_id !== $subscription->id) {
             //Update Subscription
