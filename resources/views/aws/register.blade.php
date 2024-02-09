@@ -26,8 +26,9 @@
     <div class="codex-authbox">
         <div class="auth-header">
             <div class="auth-icon"><i class="fa fa-unlock-alt"></i></div>
-            <h3>{{ __('Verify Your Email Address') }}</h3>
-            @if (session('resent'))
+            <h3>{{ __('Create Account') }}</h3>
+            <h4>An Email With your login details will be sent to your email address</h4>
+            @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ __('An email has been sent with your account deatils.') }}
                 </div>

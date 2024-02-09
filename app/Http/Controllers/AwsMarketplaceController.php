@@ -34,7 +34,7 @@ class AwsMarketplaceController extends Controller
             ]);
         
             if ($validate->fails()) {
-                return redirect()->back()->with('error', $messages->first());
+                return redirect()->back()->with('error', "Error validating marketplace token");
             }
             
             $customer_results = \app(Aws::class)->resolveCustomer($request['x-amzn-marketplace-token']);
@@ -51,7 +51,8 @@ class AwsMarketplaceController extends Controller
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage(), $th->getCode());
+            dd($th);
+//            dd($th->getMessage(), $th->getCode());
             return redirect()->back()->with('error', 'Something went wrong, please try again later.');
         }
     }
@@ -98,7 +99,8 @@ class AwsMarketplaceController extends Controller
             return redirect()->back()->with('success', 'Please check you email for account information');
         } catch (\Throwable $th) {
             //throw $th;
-            dd($th->getMessage(), $th->getCode());
+                dd($th);
+//            dd($th->getMessage(), $th->getCode());
             return redirect()->back()->with('error', 'Something went wrong, please try again later.');
         }
     }
@@ -113,7 +115,7 @@ class AwsMarketplaceController extends Controller
                 break;     
             case 'EntitlementNotification':
                 $results = \app(Aws::class)->getAllEntitlements();
-                foreach ($result['Entitlements'] as $entitlement) {
+                foreach ($results['Entitlements'] as $entitlement) {
                     switch ($entitlement['Status']) {
                         case 'ACTIVE':
                             // Handle new or upgraded entitlement
