@@ -36,7 +36,6 @@
             <form id="aws-register-form" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label for="email">Email Address</label>
                     <input type="email" class="form-control" name="email" placeholder="Please enter your email address">
                 </div>
                 <div class="form-group">
