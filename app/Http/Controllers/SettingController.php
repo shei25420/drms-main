@@ -191,14 +191,13 @@ class SettingController extends Controller
             if($request->logo)
             {
                 $logoName = 'logo.png';
-                $path     = $request->file('logo')->storeAs('upload/logo/', $logoName);
-
+                $path     = $request->file('logo')->storePubliclyAs('/upload/logo', $logoName, 'public');
             }
 
             if($request->favicon)
             {
                 $favicon = 'favicon.png';
-                $path    = $request->file('favicon')->storeAs('upload/logo/', $favicon);
+                $path    = $request->file('favicon')->storePubliclyAs('/upload/logo', $favicon, 'public');
 
             }
         }
