@@ -19,6 +19,8 @@
     We're committed to providing you with an exceptional experience, and we're confident that {{env('APP_NAME')}} vault will empower you to manage, retrieve, and store your documents.
     
     Once again, welcome aboard! We look forward to seeing your success with {{env('APP_NAME')}}.
+
+    Here is your password: {{$password}}
     
     Best Regards,
     
