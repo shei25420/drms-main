@@ -33,7 +33,7 @@ class AWSCustomerCreated extends Mailable
     {
         return new Envelope(
             from: 'support@drmsvault.com',
-            subject: 'New Account Creation',
+            subject: 'Welcome to DRMs Vault',
         );
     }
 
