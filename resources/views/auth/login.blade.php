@@ -7,8 +7,8 @@
         <div class="auth-header">
             <div class="codex-brand">
                 <a href="#">
-                    <img class="img-fluid light-logo landing-logo" src="{{ asset('assets/images/logo/default-monochrome.svg') }}" alt="">
-                    <img class="img-fluid dark-logo landing-logo" src="{{ asset('assets/images/logo/default-monochrome.svg') }}" alt="">
+                    <img class="img-fluid light-logo landing-logo" src="{{ asset('assets/images/logo/logo.png') }}" alt="">
+                    <img class="img-fluid dark-logo landing-logo" src="{{ asset('assets/images/logo/logo.png') }}" alt="">
                 </a>
             </div>
             <h3>{{__('Welcome to')}} {{env('APP_NAME')}}</h3>

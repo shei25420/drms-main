@@ -9,7 +9,7 @@
                     <div class="codex-brand">
                         <a href="#">
                             <img class="img-fluid dark-logo landing-logo"
-                                src="{{asset('storage/upload/logo/'.(isset($admin_logo) && !empty($admin_logo)?$admin_logo:'logo.png'))}}" alt="">
+                                src="{{asset('assets/images/logo/logo.png')}}" alt="">
                         </a>
                     </div>
                     <div class="d-flex align-items-center">
