@@ -171,7 +171,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
-    function awsUser () {
-        return $this->hasOne(Aws::class);
+    function awsCustomer () {
+        return $this->hasOne(AwsCustomer::class);
     }
 }

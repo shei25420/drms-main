@@ -72,8 +72,8 @@
     
 
 <!-- Pricing Section -->
-{{ \Illuminate\Support\Facades\Auth::user()->awsUser ? (
-    <section class="pricing py-5 " style="background: linear-gradient(45deg, #834bff, #ff6f00);">
+
+<section class="pricing py-5 " style="background: linear-gradient(45deg, #834bff, #ff6f00);">
     <div class="container">
         <div class="row">
             <?php
@@ -158,11 +158,6 @@
         </div>
     </div>
 </section>
-) :  (
-    <section>
-        <h3>Error: Billing is handled directly by AWS</h3>
-    </section>
-) }}
 
 <footer class="codex-footer" style="background: #051722;">
     <p>{{__('Copyright')}} {{date('Y')}} © {{env('APP_NAME')}} {{__('All rights reserved')}}.</p>

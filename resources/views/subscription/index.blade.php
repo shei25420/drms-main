@@ -21,66 +21,70 @@
 @endsection
 @section('content')
     <div class="row">
-        @foreach($subscriptions as $subscription)
-            <div class="col-md-4">
-                <div class="codex-pricingtbl">
-                    <div class="price-header">
-                        <h2>{{$subscription->name}}</h2>
-                        <div class="price-value">{{env('CURRENCY_SYMBOL').$subscription->price}}
-                            <span>/ {{$subscription->duration}}</span></div>
-                    </div>
-                    <ul class="cdxprice-list">
-                        <li><span>{{$subscription->total_user}}</span>{{__('User Limit')}}</li>
-                        <li><span>{{$subscription->total_document}}</span>{{__('Document Limit')}}</li>
-                        <li>
-                            <div class="delet-mail">
-                                @if($subscription->enabled_document_history==1)
-                                    <i class="text-success mr-4" data-feather="check-circle"></i>
-                                @else
-                                    <i class="text-danger mr-4" data-feather="x-circle"></i>
-                                @endif
-
-                                {{__('Document History')}}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="delet-mail">
-                                @if($subscription->enabled_logged_history==1)
-                                    <i class="text-success mr-4" data-feather="check-circle"></i>
-                                @else
-                                    <i class="text-danger mr-4" data-feather="x-circle"></i>
-                                @endif
-                                {{__('User Logged History')}}
-                            </div>
-                        </li>
-                        @if(\Auth::user()->type!='super admin' && \Auth::user()->subscription == $subscription->id)
-                        <li>
-                            <span>{{\Auth::user()->subscription_expire_date ? \Auth::user()->dateFormat(\Auth::user()->subscription_expire_date):__('Unlimited')}}</span>{{__('Expiry Date') }}
-                        </li>
-                            @endif
-                    </ul>
-                    @if(\Auth::user()->type=='admin' && \Auth::user()->subscription == $subscription->id)
-                        <a href="#" class="badge badge-success">{{__('Active')}}</a>
-                    @endif
-                    @if(\Auth::user()->type=='admin' && \Auth::user()->subscription != $subscription->id)
-                        <a class="text-success" data-bs-toggle="tooltip" data-bs-original-title="{{__('Detail')}}"
-                           href="{{route('subscriptions.show',\Illuminate\Support\Facades\Crypt::encrypt($subscription->id))}}"><i data-feather="shopping-cart"></i></a>
-                    @endif
-                    @if(\Auth::user()->type=='super admin')
-                        {!! Form::open(['method' => 'DELETE', 'route' => ['subscriptions.destroy', $subscription->id]]) !!}
-                        <div class="date-info">
-                            <a class="text-success customModal" data-bs-toggle="tooltip"
-                               data-bs-original-title="{{__('Edit')}}" href="#"
-                               data-url="{{ route('subscriptions.edit',$subscription->id) }}"
-                               data-title="{{__('Edit Package')}}"> <i data-feather="edit"></i></a>
-                            <a class=" text-danger confirm_dialog" data-bs-toggle="tooltip"
-                               data-bs-original-title="{{__('Detete')}}" href="#"> <i data-feather="trash-2"></i></a>
+        @if(Auth::user()->awsCustomer)
+            <h3>Error: Billing is handled by AWS</h3>
+        @else
+            @foreach($subscriptions as $subscription)
+                <div class="col-md-4">
+                    <div class="codex-pricingtbl">
+                        <div class="price-header">
+                            <h2>{{$subscription->name}}</h2>
+                            <div class="price-value">{{env('CURRENCY_SYMBOL').$subscription->price}}
+                                <span>/ {{$subscription->duration}}</span></div>
                         </div>
-                        {!! Form::close() !!}
-                    @endif
+                        <ul class="cdxprice-list">
+                            <li><span>{{$subscription->total_user}}</span>{{__('User Limit')}}</li>
+                            <li><span>{{$subscription->total_document}}</span>{{__('Document Limit')}}</li>
+                            <li>
+                                <div class="delet-mail">
+                                    @if($subscription->enabled_document_history==1)
+                                        <i class="text-success mr-4" data-feather="check-circle"></i>
+                                    @else
+                                        <i class="text-danger mr-4" data-feather="x-circle"></i>
+                                    @endif
+
+                                    {{__('Document History')}}
+                                </div>
+                            </li>
+                            <li>
+                                <div class="delet-mail">
+                                    @if($subscription->enabled_logged_history==1)
+                                        <i class="text-success mr-4" data-feather="check-circle"></i>
+                                    @else
+                                        <i class="text-danger mr-4" data-feather="x-circle"></i>
+                                    @endif
+                                    {{__('User Logged History')}}
+                                </div>
+                            </li>
+                            @if(\Auth::user()->type!='super admin' && \Auth::user()->subscription == $subscription->id)
+                                <li>
+                                    <span>{{\Auth::user()->subscription_expire_date ? \Auth::user()->dateFormat(\Auth::user()->subscription_expire_date):__('Unlimited')}}</span>{{__('Expiry Date') }}
+                                </li>
+                            @endif
+                        </ul>
+                        @if(\Auth::user()->type=='admin' && \Auth::user()->subscription == $subscription->id)
+                            <a href="#" class="badge badge-success">{{__('Active')}}</a>
+                        @endif
+                        @if(\Auth::user()->type=='admin' && \Auth::user()->subscription != $subscription->id)
+                            <a class="text-success" data-bs-toggle="tooltip" data-bs-original-title="{{__('Detail')}}"
+                               href="{{route('subscriptions.show',\Illuminate\Support\Facades\Crypt::encrypt($subscription->id))}}"><i data-feather="shopping-cart"></i></a>
+                        @endif
+                        @if(\Auth::user()->type=='super admin')
+                            {!! Form::open(['method' => 'DELETE', 'route' => ['subscriptions.destroy', $subscription->id]]) !!}
+                            <div class="date-info">
+                                <a class="text-success customModal" data-bs-toggle="tooltip"
+                                   data-bs-original-title="{{__('Edit')}}" href="#"
+                                   data-url="{{ route('subscriptions.edit',$subscription->id) }}"
+                                   data-title="{{__('Edit Package')}}"> <i data-feather="edit"></i></a>
+                                <a class=" text-danger confirm_dialog" data-bs-toggle="tooltip"
+                                   data-bs-original-title="{{__('Detete')}}" href="#"> <i data-feather="trash-2"></i></a>
+                            </div>
+                            {!! Form::close() !!}
+                        @endif
+                    </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
     </div>
 @endsection
 
