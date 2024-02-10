@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Services\Aws;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,8 +14,6 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasRoles;
     use Notifiable;
-
-
 
     protected $fillable = [
         'name',
@@ -172,5 +171,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
-
+    function awsUser () {
+        return $this->hasOne(Aws::class);
+    }
 }

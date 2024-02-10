@@ -72,12 +72,12 @@
     
 
 <!-- Pricing Section -->
-
-<section class="pricing py-5 " style="background: linear-gradient(45deg, #834bff, #ff6f00);">
+{{ \Illuminate\Support\Facades\Auth::user()->awsUser ? (
+    <section class="pricing py-5 " style="background: linear-gradient(45deg, #834bff, #ff6f00);">
     <div class="container">
         <div class="row">
             <?php
-        
+
         $plans = [
             [
                 'name' => '<span style="color: #0d6efd;">BASIC</span>',
@@ -128,7 +128,7 @@
                 'color' => 'red'
             ],
         ];
-        
+
         foreach ($plans as $plan) {
             echo '<div class="col-lg-4">';
             echo '<div class="card mb-5 mb-lg-0">';
@@ -158,6 +158,11 @@
         </div>
     </div>
 </section>
+) :  (
+    <section>
+        <h3>Error: Billing is handled directly by AWS</h3>
+    </section>
+) }}
 
 <footer class="codex-footer" style="background: #051722;">
     <p>{{__('Copyright')}} {{date('Y')}} © {{env('APP_NAME')}} {{__('All rights reserved')}}.</p>
