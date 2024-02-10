@@ -66,9 +66,5 @@ class AppServiceProvider extends ServiceProvider
             $this->app->singleton(Aws::class, function () {
                 return new Aws();
             });
-
-        $this->app->bind('path.public', function() {
-            return realpath(base_path().'/public_html');
-        });
     }
 }
