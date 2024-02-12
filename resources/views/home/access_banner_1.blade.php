@@ -5,12 +5,12 @@
                 <div class="header-detail">
                     <div>
                         <h2 class="wow fadeInUp" data-wow-duration="0.8s">
-                            {{ __('Accessible Anywhere, Anytime: ') }}</h2>
+                            {{ __('Accessible Anywhere, Anytime ') }}</h2>
                         <p class="wow fadeInUp" data-wow-duration="1.3s">
                             {{ __('Document and Records Management System (DRMS Vault) software refers to the various features and functionalities that the software offers to help organizations manage their digital documents effectively.') }}
                         </p>
                         <a class="btn btn-primary btn-md wow fadeInUp" data-wow-duration="1.8s"
-                            href="javascript:void(0);">{{ __('Sign up') }}</a>
+                            href={{ route('register') }}>{{ __('Sign up') }}</a>
                     </div>
                 </div>
             </div>

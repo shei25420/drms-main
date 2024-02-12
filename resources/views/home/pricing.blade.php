@@ -12,7 +12,7 @@
             @foreach ($subscriptions as $subscription)
                 <div class="col-lg-3">
                     <div class="card mb-5 mb-lg-0">
-                        <div class="card-body">';
+                        <div class="card-body">
                             <h5 class="card-title text-muted text-uppercase text-center"><span
                                     style="color: #0d6efd;">{{ $subscription->name }}</span></h5>
                             <h6 class="card-price text-center"
