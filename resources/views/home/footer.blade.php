@@ -15,7 +15,7 @@
             <div class="col text-end">
                 <a href="javascript:void(0);" class="d-block mb-3">
                     <img class="img-fluid wow fadeInUp landing-logo"
-                        src="{{asset(Storage::url('upload/logo/')).'/'.(isset($admin_logo) && !empty($admin_logo)?$admin_logo:'logo.png')}}" alt="">
+                        src="{{asset('assets/images/logo/logo.png')}}" alt="">
                 </a>
                 <p class="mb-0">{{ __('Copyright') }} {{ date('Y') }} {{ env('APP_NAME') }}</p>
             </div>

@@ -77,7 +77,7 @@
     <div class="container">
         <div class="row">
             <?php
-        
+
         $plans = [
             [
                 'name' => '<span style="color: #0d6efd;">BASIC</span>',
@@ -128,7 +128,7 @@
                 'color' => 'red'
             ],
         ];
-        
+
         foreach ($plans as $plan) {
             echo '<div class="col-lg-4">';
             echo '<div class="card mb-5 mb-lg-0">';
