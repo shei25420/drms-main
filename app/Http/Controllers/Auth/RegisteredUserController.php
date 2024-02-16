@@ -69,11 +69,6 @@ class RegisteredUserController extends Controller
             ]);
         }
 
-        $customer = Billing::createCustomer('stripe', $user);
-        StripeCustomer::create([
-            'user_id' => $user->id,
-            'customer_id' => $customer->id,
-        ]);
         event(new Registered($user));
         $role_r = Role::findByName('owner');
         $user->assignRole($role_r);

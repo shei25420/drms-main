@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\BillingHelper;
+use App\Http\Services\Billing\StripeClient;
 use App\Models\Order;
 use App\Models\BillingPlan;
 use App\Models\Subscription;
@@ -10,6 +12,7 @@ use App\Http\Services\Billing;
 use App\Models\BillingProduct;
 use App\Models\BillingTransaction;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Redirect;
 
 class SubscriptionController extends Controller
 {
@@ -67,27 +70,22 @@ class SubscriptionController extends Controller
                         'description' => $request->description,
                     ]
                 );
-    
+                $stripe_billing_product = Billing::createProduct('stripe', $subscription->name, $subscription->price, $subscription->duration);
+                BillingProduct::create([
+                    'provider' => "stripe",
+                    'subscription_id' => $subscription->id,
+                    'product_id' => $stripe_billing_product->product->id,
+                    'price_id' => $stripe_billing_product->price->id
+                ]);
+
                 $stripe_plan_id = Billing::createPlan('stripe', $subscription);
-                $paypal_plan_id =  Billing::createPlan('paypal', $subscription);
+//                $paypal_plan_id =  Billing::createPlan('paypal', $subscription);
                 
                 BillingPlan::create([
-                    'provider' => 'paypal',
-                    'plan_id' => $paypal_plan_id,
-                    'subscription_id' => $subscription->id
-                ], [
                     'provider' => 'stripe',
                     'plan_id' => $stripe_plan_id,
                     'subscription_id' => $subscription->id
                 ]);
-
-                $stripe_billing_product = Billing::createProduct('stripe', $subscription->name);
-                BillingProduct::create([
-                    'provider' => "stripe",
-                    'subscription_id' => $subscription->id,
-                    'product_id' => $stripe_billing_product->id
-                ]);
-
                 return redirect()->route('subscriptions.index')->with('success', __('Subscription successfully created!'));
             } else {
                 return redirect()->back()->with('error', __('Permission Denied!'));
@@ -193,7 +191,7 @@ class SubscriptionController extends Controller
             $authUser = \Auth::user();
             $id = \Illuminate\Support\Facades\Crypt::decrypt($ids);
             $subscription = Subscription::find($id);
-    
+
             if ($subscription) {
                 try {
                     $orderID = uniqid('', true);
@@ -201,12 +199,10 @@ class SubscriptionController extends Controller
                         $transaction = new BillingTransaction();
                         switch ($request->payment_type) {
                             case 'stripe':
-                                $billingProduct = BillingProduct::where('provider', 'stripe')->first();
-                                
-                                $data = Billing::createSubscription('stripe', $subscription, ['product_id' => $billingProduct->product_id, 'duration' => $subscription->duration === 'MONTHLY' ? 'month' : 'year']);
-                                $transaction_resp = BillingHelper::handleStripeTransaction($data, $subscription, $orderID);
-                                $transaction->provider = 'stripe';
-                                break;
+                                $session = Billing::createSubscription('stripe', $subscription);
+//                                $transaction_resp = BillingHelper::handleStripeTransaction($data, $subscription, $orderID);
+//                                $transaction->provider = 'stripe';
+                                return Redirect::to($session->url);
                             case 'paypal':
                                 $data = Billing::createSubscription('paypal', $subscription, ['token' => $request->stripeToken, 'orderID' => $orderID]);
                                 $transaction_resp = BillingHelper::handlePaypalTransaction($data, $subscription, $orderID);
@@ -232,6 +228,7 @@ class SubscriptionController extends Controller
                         return redirect()->route('subscriptions.index')->with('error', __($transaction_resp['message']));
                     }
                 } catch (\Exception $e) {
+                    dd($e);
                     return redirect()->route('subscriptions.index')->with('error', __($e->getMessage()));
                 }
             } else {
@@ -262,6 +259,49 @@ class SubscriptionController extends Controller
             return redirect()->route('subscriptions.index')->with('success', __('Subscription Cancelled Successfully'));
         } else {
             return redirect()->back()->with('error', __('Permission denied.'));
+        }
+    }
+
+
+    public function confirmStripePayment (Request $request) {
+        try {
+            $subscriptionId = Crypt::decrypt($request->get('sub_id'));
+            $subscription = Subscription::findOrFail($subscriptionId);
+            $sessionId = $request->query('session_id');
+            $session = \app(StripeClient::class)->retrieveSessionDetails($sessionId);
+
+            if ($session->payment_status !== 'paid') {
+                return response()->redirectTo('/subscriptions')->with('error', 'Payment failed. Please try again');
+            }
+            $orderID = uniqid('', true);
+            $authUser = \Auth::user();
+            Order::create(
+                [
+                    'order_id' => $orderID,
+                    'name' => $session->customer_details->name,
+                    'card_number' => '',
+                    'card_exp_month' => '',
+                    'card_exp_year' => '',
+                    'subscription' => $subscription->name,
+                    'subscription_id' => $subscription->id,
+                    'price' => $session->amount_total / 100,
+                    'price_currency' => $session->currency,
+                    'txn_id' => '',
+                    'payment_status' => 'succeeded',
+                    'payment_type' => __('STRIPE'),
+                    'receipt' => '',
+                    'user_id' => $authUser->id,
+                ]
+            );
+
+            $assignPlan = $authUser->assignSubscription($subscription->id);
+            if ($assignPlan['is_success']) {
+                return redirect()->route('subscriptions.index')->with('success', __('Subscription successfully activated.'));
+            } else {
+                return redirect()->route('subscriptions.index')->with('error', __($assignPlan['error']));
+            }
+        } catch (e) {
+            return response()->redirectTo('/subscriptions')->with('error', 'Payment failed. Please try again');
         }
     }
 }

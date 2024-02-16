@@ -134,7 +134,7 @@
             echo '<div class="card mb-5 mb-lg-0">';
             echo '<div class="card-body">';
             echo "<h5 class=\"card-title text-muted text-uppercase text-center\">{$plan['name']}</h5>";
-            echo "<h6 class=\"card-price text-center\">{$plan['price']}<span class=\"period\">/{$plan['period']}</span></h6>";
+            echo "<h6 class=\"card-price text-center\">{$plan['price']}<span class=\"period\">44444444</span></h6>";
             echo '<hr>';
             echo '<ul class="fa-ul">';
             foreach ($plan['features'] as $feature => $value) {

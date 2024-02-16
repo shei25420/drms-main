@@ -8,7 +8,7 @@ class BillingHelper {
             $orders = Order::create(
                 [
                     'order_id' => $orderID,
-                    'name' => $request->name,
+                    'name' => $data->name,
                     'card_number' => isset($data['payment_method_details']['card']['last4']) ? $data['payment_method_details']['card']['last4'] : '',
                     'card_exp_month' => isset($data['payment_method_details']['card']['exp_month']) ? $data['payment_method_details']['card']['exp_month'] : '',
                     'card_exp_year' => isset($data['payment_method_details']['card']['exp_year']) ? $data['payment_method_details']['card']['exp_year'] : '',

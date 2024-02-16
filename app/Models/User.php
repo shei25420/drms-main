@@ -80,11 +80,11 @@ class User extends Authenticatable implements MustVerifyEmail
         if($subscription)
         {
             $this->subscription = $subscription->id;
-            if($subscription->duration == 'month')
+            if($subscription->duration == 'Monthly')
             {
                 $this->subscription_expire_date = Carbon::now()->addMonths(1)->isoFormat('YYYY-MM-DD');
             }
-            elseif($subscription->duration == 'year')
+            elseif($subscription->duration == 'Yearly')
             {
                 $this->subscription_expire_date = Carbon::now()->addYears(1)->isoFormat('YYYY-MM-DD');
             }
@@ -124,7 +124,9 @@ class User extends Authenticatable implements MustVerifyEmail
                     }
                 }
             }
-
+            return [
+                'is_success' => true
+            ];
         }
         else
         {

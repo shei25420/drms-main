@@ -12,5 +12,7 @@ class BillingProduct extends Model
     protected $fillable = [
         'product_id',
         'provider',
+        'price_id',
+        'subscription_id'
     ];
 }

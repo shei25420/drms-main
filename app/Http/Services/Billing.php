@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Models\BillingPlan;
 use App\Models\BillingProduct;
 use App\Models\StripeCustomer;
 use App\Http\Interfaces\Subscription;
@@ -10,23 +11,23 @@ use App\Http\Services\Billing\StripeClient;
 
 class Billing implements Subscription {
     public static function createPlan ($paymentType, $subscription) {
-        $billing_product = BillingProduct::where('provider', $paymentType)->first();
+        $billing_product = BillingProduct::firstWhere('provider', $paymentType);
         switch ($paymentType) {
-            case 'paypal':
-                $plan  = \app(PaypalClient::class)->createPlan($billing_product->product_id, $subscription->name, $subscription->price, $subscription->duration);
-                $listedPlans = \app(PaypalClient::class)->listPlans();
-                return $listedPlans['plans'][$listedPlans['total_items'] - 1]['id'];
+//            case 'paypal':
+//                $plan  = \app(PaypalClient::class)->createPlan($billing_product['product_id'], $subscription->name, $subscription->price, $subscription->duration);
+//                $listedPlans = \app(PaypalClient::class)->listPlans();
+//                return $listedPlans['plans'][$listedPlans['total_items'] - 1]['id'];
             case 'stripe':
-                return \app(StripeClient::class)->createPlan($subscription->duration === 'Monthly' ? 'month' : 'year', $subscription->price, $subscription->name)->id;
+                return \app(StripeClient::class)->createPlan($subscription->duration == 'Monthly' ? 'month' : 'year', $subscription->price, $subscription->name)->id;
             default:
                 return null;
         }
     }
     
-    public static function createProduct ($paymentType, $name) {
+    public static function createProduct ($paymentType, $name, $price, $duration = null) {
         switch ($paymentType) {
             case 'stripe':
-                return \app(StripeClient::class)->createProduct($name);
+                return \app(StripeClient::class)->createProduct($name, ['price' => $price, 'duration' => $duration]);
             default:
                 # code...
                 break;
@@ -34,15 +35,15 @@ class Billing implements Subscription {
         return null;
     }
 
-    public static function createSubscription($paymentType, $subscription, $extraData = null) {
+    public static function createSubscription($paymentType, $package, $extraData = null) {
         switch ($paymentType) {
             case 'paypal':
-                $billing_plan = BillingPlan::where('provider', $paymentType)->where('subscription_id', $subscription->id)->first();
+                $billing_plan = BillingPlan::where('provider', $paymentType)->where('subscription_id', $package->id)->first();
                 return \app(PaypalClient::class)->createSubscription($billing_plan->plan_id);
             case 'stripe':
                 // Fetch Customer
-                $customer = StripeCustomer::where('user_id', auth()->id())->firstOrFail();
-                return \app(StripeClient::class)->createSubscription($customer->customer_id, $subscription->price, $extraData['product_id'], $extraData['duration']);
+                $billing_product = BillingProduct::where('subscription_id', $package->id)->first();
+                return \app(StripeClient::class)->createSubscription($billing_product['price_id'], $package->id);
             default:
                 return null;
         }
@@ -70,6 +71,10 @@ class Billing implements Subscription {
             default:
                 return null;
         }
+    }
+
+    public static function createSession () {
+
     }
 
 }

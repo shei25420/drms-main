@@ -92,6 +92,7 @@ Route::group(
     ], function (){
 
     Route::get('subscription/transaction', [SubscriptionController::class,'transaction'])->name('subscription.transaction');
+    Route::get('subscription/stripe/confirm', [\App\Http\Controllers\SubscriptionController::class, 'confirmStripePayment']);
     Route::post('subscription/{id}/stripe/payment', [SubscriptionController::class,'stripePayment'])->name('subscription.stripe.payment');
 
 }
