@@ -1,8 +1,9 @@
 @php
     $admin_logo=\App\Models\Custom::getValByName('company_logo');
     $logo_name = $admin_logo ? $admin_logo : 'logo.png';
-    $logo = \Illuminate\Support\Facades\Storage::disk('public')->url('upload/logo/'.$logo_name);
+//    $logo = \Illuminate\Support\Facades\Storage::disk('public')->url('upload/logo/'.$logo_name);
 
+    $logo = asset('/storage/upload/logo/'.$logo_name);
     $ids     = \Auth::user()->parentId();
     $authUser=\App\Models\User::find($ids);
     $subscription = \App\Models\Subscription::find($authUser->subscription);
