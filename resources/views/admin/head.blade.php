@@ -2,6 +2,8 @@
     $admin_favicon=\App\Models\Custom::getValByName('company_favicon');
     $app_name=\App\Models\Custom::getValByName('app_name');
 
+    $favicon_name = $admin_favicon ? $admin_favicon : 'favIcon.png';
+    $favicon = \Illuminate\Support\Facades\Storage::disk('public')->url('upload/favicons/'.$favicon_name);
 @endphp
 <head>
     <!-- Required meta tags-->
@@ -12,8 +14,8 @@
     <meta name="csrf-token" content="{{csrf_token()}}">
     <title>{{!empty($app_name)?$app_name:env('APP_NAME')}} - @yield('page-title') </title>
     <!-- shortcut icon-->
-    <link rel="icon" href="{{asset(Storage::url('upload/logo')).'/'.$admin_favicon}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset(Storage::url('upload/logo')).'/'.$admin_favicon}}" type="image/x-icon">
+    <link rel="icon" href="{{$favicon}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{$favicon}}" type="image/x-icon">
     <!-- Fonts css-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

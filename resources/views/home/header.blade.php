@@ -1,5 +1,7 @@
 @php
     $admin_logo=\App\Models\Custom::getValByName('company_logo');
+    $logo_name = $admin_logo ? $admin_logo : 'logo.png';
+    $logo = \Illuminate\Support\Facades\Storage::disk('public')->url('upload/logo/'.$logo_name);
 @endphp
 <header class="land-header fixed">
     <div class="container">
@@ -9,7 +11,7 @@
                     <div class="codex-brand">
                         <a href="#">
                             <img class="img-fluid dark-logo landing-logo"
-                                src="{{asset('assets/images/logo/logo.png')}}" alt="">
+                                src="{{$logo}}" alt="">
                         </a>
                     </div>
                     <div class="d-flex align-items-center">

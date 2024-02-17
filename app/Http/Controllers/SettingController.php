@@ -59,8 +59,7 @@ class SettingController extends Controller
                 mkdir($dir, 0777, true);
             }
 
-            $path = $request->file('profile')->storeAs('upload/profile/', $fileNameToStore);
-
+            $path = $request->file('profile')->storePubliclyAs('upload/profile/', $fileNameToStore, 'public');
         }
 
         if(!empty($request->profile))
@@ -273,7 +272,7 @@ class SettingController extends Controller
             if($request->favicon)
             {
                 $logoName = \Auth::user()->id . '_favicon.png';
-                $path     = $request->file('favicon')->storePubliclyAs('/upload/logo', $logoName, 'public');
+                $path     = $request->file('favicon')->storePubliclyAs('/upload/avatars', $logoName, 'public');
 
                 \DB::insert(
                     'insert into settings (`value`, `name`,`parent_id`) values (?, ?, ?) ON DUPLICATE KEY UPDATE `value` = VALUES(`value`) ', [

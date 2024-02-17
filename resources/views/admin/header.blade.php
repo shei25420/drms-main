@@ -2,7 +2,9 @@
     $users=\Auth::user();
    $languages=\App\Models\Custom::languages();
    $userLang=\Auth::user()->lang;
-   $profile=asset(Storage::url('upload/profile'));
+   $profileImgName = $users->profile ? $users->profile : 'profile.png';
+   $profile = \Illuminate\Support\Facades\Storage::disk('public')->url('upload/profile/'.$profileImgName);
+//   $profile=asset(Storage::url('upload/profile'));
 @endphp
     <!-- Header Start-->
 <header class="codex-header">
@@ -41,7 +43,7 @@
                 <li class="nav-profile">
                     <div class="media">
                         <div class="user-icon"><img class="img-fluid rounded-50"
-                                                    src="{{asset('assets/images/avatar.png')}}"
+                                                    src="{{$profile}}"
                                                     alt="logo"></div>
                         <div class="media-body">
                             <h6>{{\Auth::user()->name}}</h6><span class="text-light">{{\Auth::user()->type}}</span>
