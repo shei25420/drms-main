@@ -45,12 +45,12 @@ class PaypalClient
     /**
      * @throws \Throwable
      */
-    public function createSubscription ($sub_id, $product_id, $plan_id, $name, $email) {
+    public function createSubscription ($product_id, $plan_id, $name, $email) {
         // Send the request to create the subscription
         $response = $this->provider
             ->addProductById($product_id)
             ->addBillingPlanById($plan_id)
-            ->setReturnAndCancelUrl(env('APP_URL').'/subscription/paypal/confirm?sub_id='.$sub_id, env('APP_URL').'/subscription/paypal/cancel?sub_id='.$sub_id)
+            ->setReturnAndCancelUrl(env('APP_URL').'/subscription/paypal/confirm', env('APP_URL').'/subscription/paypal/cancel')
             ->setupSubscription($name, $email, Carbon::now()->addMinute(1)->toDateTimeString());
 
         if (isset($response['id']) && $response['id'] != null) {
