@@ -16,7 +16,7 @@ class Billing implements Subscription {
             case 'paypal':
                 $billing_product = PaypalProduct::first();
                 $plan  = \app(PaypalClient::class)->createPlan($billing_product['product_id'], $subscription->name, $subscription->price, $subscription->duration);
-                $listedPlans = \app(PaypalClient::class)->listPlans();
+                $listedPlans = \app(PaypalClient::class)->listPlans(1, 50);
                 dd($listedPlans);
                 return $listedPlans['plans'][$listedPlans['total_items'] - 1]['id'];
             case 'stripe':
