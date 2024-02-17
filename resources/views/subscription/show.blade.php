@@ -14,9 +14,25 @@
 
         var form = document.getElementById('stripe-payment');
         var stripeBtn = document.getElementById('stripe_method');
+        var paypalBtn = document.getElementById('paypal_method');
 
         stripeBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'payment_type');
+            hiddenInput.setAttribute('value', 'stripe');
+            form.appendChild(hiddenInput);
+            form.requestSubmit();
+        });
+
+        paypalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'payment_type');
+            hiddenInput.setAttribute('value', 'paypal');
+            form.appendChild(hiddenInput);
             form.requestSubmit();
         });
 
@@ -118,23 +134,23 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <form class="hidden" action="{{ route('subscription.stripe.payment', \Illuminate\Support\Facades\Crypt::encrypt($subscription->id)) }}" method="post" class="require-validation" id="stripe-payment">
-                                            @csrf
-                                            <input type="hidden" name="payment_type" value="stripe">
-                                        </form>
-
                                     </a>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="card" style="max-width: 200px;">
-                                        <div class="card-body p-0">
-                                            <div class="card bg-dark text-white">
-                                                <img width="200" height="200" src="{{ asset('/assets/images/payment/paypal.webp')  }}" class="card-img img-fluid" alt="paypal payment">
+                                    <a href="#" id="paypal_method">
+                                        <div class="card" style="max-width: 200px;">
+                                            <div class="card-body p-0">
+                                                <div class="card bg-dark text-white">
+                                                    <img width="200" height="200" src="{{ asset('/assets/images/payment/paypal.webp')  }}" class="card-img img-fluid" alt="paypal payment">
+                                                </div>
+
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
-
+                                <form class="hidden" action="{{ route('subscription.stripe.payment', \Illuminate\Support\Facades\Crypt::encrypt($subscription->id)) }}" method="post" class="require-validation" id="stripe-payment">
+                                    @csrf
+                                </form>
                             </div>
                         </div>
                     </div>

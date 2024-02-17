@@ -3,6 +3,7 @@ namespace App\Providers;
 
 use App\Http\Services\Aws;
 use App\Models\BillingProduct;
+use App\Models\PaypalProduct;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use App\Http\Services\Billing\PaypalClient;
@@ -30,24 +31,23 @@ class AppServiceProvider extends ServiceProvider
     {
             Schema::defaultStringLength(191);
 //
-//            $this->app->singleton(PaypalClient::class, function () {
-//                $client = new PaypalClient();
-//                $paypalProduct = BillingProduct::where('provider', 'paypal')->first();
-//                if (!$paypalProduct) {
-//                    $product = $client->createProduct(
-//                        'DRMS Vault',
-//                        'SERVICE',
-//                        'DRMS Vault. Digital Record Management System',
-//                        'SOFTWARE',
-//                        'https://drmsvault.com'
-//                    );
-//                    BillingProduct::create([
-//                        'product_id' => $client->listProducts()['products'][0]['id'],
-//                        'provider' => 'paypal',
-//                    ]);
-//                }
-//                return $client;
-//            });
+            $this->app->singleton(PaypalClient::class, function () {
+                $client = new PaypalClient();
+                $paypalProduct = PaypalProduct::first();
+                if (!$paypalProduct) {
+                    $product = $client->createProduct(
+                        'DRMS Vault',
+                        'SERVICE',
+                        'DRMS Vault. Digital Record Management System',
+                        'SOFTWARE',
+                        'https://drmsvault.com'
+                    );
+                    PaypalProduct::create([
+                        'product_id' => $client->listProducts()['products'][0]['id']
+                    ]);
+                }
+                return $client;
+            });
 //
 //            $this->app->singleton(StripeClient::class, function () {
 //                $client = new StripeClient();
