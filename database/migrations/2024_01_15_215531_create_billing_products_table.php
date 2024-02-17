@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('billing_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subscription_id')->references('id')->on('subscriptions');
+            $table->foreignId('subscription_id')->references('id')->on('subscriptions')->onDelete('CASCADE');
             $table->string('product_id')->unique();
             $table->string('price_id')->nullable();
             $table->enum('provider', ['stripe', 'paypal']);
