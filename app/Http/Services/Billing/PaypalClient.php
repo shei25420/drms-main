@@ -33,10 +33,13 @@ class PaypalClient
             default:
                 return null;
         }
-    }  
+    }
 
+    /**
+     * @throws \Throwable
+     */
     public function listPlans () {
-        return $this->provider->listPlans();
+        return $this->provider->listPlans(1, 50);
     }
 
     /**
