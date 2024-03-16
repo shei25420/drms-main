@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Services\Billing;
+use Carbon\Carbon;
+use Carbon\Traits\Date;
 use Srmklive\PayPal\Services\PayPal;
 // use App\Http\Services\Billing\PaypalClient;
 
@@ -31,59 +33,27 @@ class PaypalClient
             default:
                 return null;
         }
-        // return $this->provider->createPlan(json_encode([
-        //     "product_id" => $product_id,
-        //     "name" => $name,
-        //     "status" => "ACTIVE",
-        //     "billing_cycles" => [
-        //         [
-        //             "frequency" => [
-        //                 "interval_unit" => $duration,
-        //                 "interval_count" => 1
-        //             ],
-        //             "tenure_type" => "REGULAR",
-        //             "sequence" => 1,
-        //             "total_cycles" => $duration === 'MONTH' ? 12 : 1,
-        //             "pricing_scheme" => [
-        //                 "fixed_price" => [
-        //                     "value" => $subscription->price,
-        //                     "currency_code" => "USD"
-        //                 ]
-        //             ]
-        //         ]
-        //     ],
-        //     "payment_preferences" => [
-        //         "auto_bill_outstanding" => true,
-        //         "setup_fee" => [
-        //             "value" => $subscription->price,
-        //             "currency_code" => "USD"
-        //         ],
-        //         "setup_fee_failure_action" => "CONTINUE",
-        //         "payment_failure_threshold" => 3
-        //     ]
-        // ]));
-    }  
-
-    public function listPlans () {
-        return $this->provider->listPlans();
     }
 
+    /**
+     * @throws \Throwable
+     */
+    public function listPlans () {
+        return $this->provider->listPlans(1, 50);
+    }
+
+    /**
+     * @throws \Throwable
+     */
     public function createSubscription ($product_id, $plan_id, $name, $email) {
         // Send the request to create the subscription
-        $response = $this->provider->addProductById($product_id)->addBillingPlanById($plan_id)->setupSubscription($name, $email);
+        $response = $this->provider
+            ->addProductById($product_id)
+            ->addBillingPlanById($plan_id)
+            ->setReturnAndCancelUrl(env('APP_URL').'/subscription/paypal/confirm', env('APP_URL').'/subscription/paypal/cancel')
+            ->setupSubscription($name, $email, Carbon::now()->addMinute(1)->toDateTimeString());
 
         if (isset($response['id']) && $response['id'] != null) {
-            // Redirect to PayPal approval URL
-            // foreach ($response['links'] as $link) {
-            //     if ($link['rel'] == 'approve') {
-            //         return redirect()->away($link['href']);
-            //     }
-            // }
-
-            // return redirect()
-            //     ->route('home')
-            //     ->with('error', 'Something went wrong.');
-        
             return $response['links'];
         } else {
             return null;
@@ -92,5 +62,13 @@ class PaypalClient
 
     public function cancelSubscription ($subscription_id, $reason = 'No reason provided') {
         $this->provider->cancelSubscription($subscription_id, $reason);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function fetchSubscription ($subscriptionId): \Psr\Http\Message\StreamInterface|array|string
+    {
+        return $this->provider->showSubscriptionDetails($subscriptionId);
     }
 }

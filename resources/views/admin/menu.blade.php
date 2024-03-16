@@ -1,14 +1,18 @@
 @php
     $admin_logo=\App\Models\Custom::getValByName('company_logo');
+    $logo_name = $admin_logo ? $admin_logo : 'logo.png';
+//    $logo = \Illuminate\Support\Facades\Storage::disk('public')->url('upload/logo/'.$logo_name);
+
+    $logo = asset('/storage/upload/logo/'.$logo_name);
     $ids     = \Auth::user()->parentId();
     $authUser=\App\Models\User::find($ids);
- $subscription = \App\Models\Subscription::find($authUser->subscription);
+    $subscription = \App\Models\Subscription::find($authUser->subscription);
 @endphp
 <aside class="codex-sidebar sidebar-{{$settings['sidebar_mode']}}">
     <div class="logo-gridwrap">
         <a class="codexbrand-logo" href="{{route('home')}}">
             <img class="img-fluid"
-                 src="{{asset('assets/images/logo/logo.png')}}"
+                 src="{{$logo}}"
                  alt="theeme-logo">
         </a>
         <a class="codex-darklogo" href="{{route('home')}}">

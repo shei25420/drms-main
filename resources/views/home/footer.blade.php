@@ -1,3 +1,8 @@
+@php
+    $admin_logo=\App\Models\Custom::getValByName('company_logo');
+    $logo_name = $admin_logo ? $admin_logo : 'logo.png';
+    $logo = \Illuminate\Support\Facades\Storage::disk('public')->url('upload/logo/'.$logo_name);
+@endphp
 <footer class="lan-footer py-5">
     <div class="container">
         <div class="row">
@@ -15,7 +20,7 @@
             <div class="col text-end">
                 <a href="javascript:void(0);" class="d-block mb-3">
                     <img class="img-fluid wow fadeInUp landing-logo"
-                        src="{{asset('assets/images/logo/logo.png')}}" alt="">
+                        src="{{$logo}}" alt="">
                 </a>
                 <p class="mb-0">{{ __('Copyright') }} {{ date('Y') }} {{ env('APP_NAME') }}</p>
             </div>

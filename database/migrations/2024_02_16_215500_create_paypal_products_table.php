@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('billing_products', function (Blueprint $table) {
+        Schema::create('paypal_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subscription_id')->references('id')->on('subscriptions')->onDelete('CASCADE');
             $table->string('product_id')->unique();
-            $table->string('price_id')->nullable();
-            $table->enum('provider', ['stripe', 'paypal']);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('billing_products');
+        Schema::dropIfExists('paypal_products');
     }
 };

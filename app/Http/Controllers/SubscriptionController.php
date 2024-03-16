@@ -79,12 +79,18 @@ class SubscriptionController extends Controller
                 ]);
 
                 $stripe_plan_id = Billing::createPlan('stripe', $subscription);
-//                $paypal_plan_id =  Billing::createPlan('paypal', $subscription);
+                $paypal_plan_id =  Billing::createPlan('paypal', $subscription);
                 
-                BillingPlan::create([
-                    'provider' => 'stripe',
-                    'plan_id' => $stripe_plan_id,
-                    'subscription_id' => $subscription->id
+                BillingPlan::insert([
+                    [
+                        'provider' => 'stripe',
+                        'plan_id' => $stripe_plan_id,
+                        'subscription_id' => $subscription->id
+                    ], [
+                        'provider' => 'paypal',
+                        'plan_id' => $paypal_plan_id,
+                        'subscription_id' => $subscription->id
+                    ]
                 ]);
                 return redirect()->route('subscriptions.index')->with('success', __('Subscription successfully created!'));
             } else {
@@ -204,10 +210,14 @@ class SubscriptionController extends Controller
 //                                $transaction->provider = 'stripe';
                                 return Redirect::to($session->url);
                             case 'paypal':
-                                $data = Billing::createSubscription('paypal', $subscription, ['token' => $request->stripeToken, 'orderID' => $orderID]);
-                                $transaction_resp = BillingHelper::handlePaypalTransaction($data, $subscription, $orderID);
-                                $transaction->provider = 'paypal';
-                                break;
+                                $links = Billing::createSubscription('paypal', $subscription, ['token' => $request->stripeToken, 'orderID' => $orderID]);
+//                                $transaction_resp = BillingHelper::handlePaypalTransaction($data, $subscription, $orderID);
+//                                $transaction->provider = 'paypal';
+                                foreach ($links as $link) {
+                                    if ($link['rel'] == 'approve') {
+                                        return Redirect::to($link['href']);
+                                    }
+                                }
                             default:
                                 return redirect()->route('subscriptions.index')->with('error', __('Unsupported Payment Gateway'));
                         }
@@ -219,14 +229,14 @@ class SubscriptionController extends Controller
                         $data['status'] = 'succeeded';
                     }
 
-                    if ($transaction_resp['status']) {
-                        $transaction->order_id = $orderID;
-                        $transaction->transaction_id = $data['id'];
-                        $transaction->save();
-                        return redirect()->route('subscriptions.index')->with('success', __('Transaction Successfully complete'));
-                    } else {
-                        return redirect()->route('subscriptions.index')->with('error', __($transaction_resp['message']));
-                    }
+//                    if ($transaction_resp['status']) {
+//                        $transaction->order_id = $orderID;
+//                        $transaction->transaction_id = $data['id'];
+//                        $transaction->save();
+//                        return redirect()->route('subscriptions.index')->with('success', __('Transaction Successfully complete'));
+//                    } else {
+//                        return redirect()->route('subscriptions.index')->with('error', __($transaction_resp['message']));
+//                    }
                 } catch (\Exception $e) {
                     dd($e);
                     return redirect()->route('subscriptions.index')->with('error', __($e->getMessage()));
@@ -293,7 +303,46 @@ class SubscriptionController extends Controller
                     'user_id' => $authUser->id,
                 ]
             );
+            $assignPlan = $authUser->assignSubscription($subscription->id);
+            if ($assignPlan['is_success']) {
+                return redirect()->route('subscriptions.index')->with('success', __('Subscription successfully activated.'));
+            } else {
+                return redirect()->route('subscriptions.index')->with('error', __($assignPlan['error']));
+            }
+        } catch (e) {
+            return response()->redirectTo('/subscriptions')->with('error', 'Payment failed. Please try again');
+        }
+    }
 
+    public function confirmPaypalPayment (Request $request) {
+        try {
+            $paypal_sub_id = $request->get('subscription_id');
+            $paypal_sub = \app(Billing\PaypalClient::class)->fetchSubscription($paypal_sub_id);
+
+            $billingPlan = BillingPlan::where('plan_id', $paypal_sub['plan_id'])->first();
+            $subscription = Subscription::find($billingPlan['subscription_id']);
+
+            $orderID = uniqid('', true);
+            $authUser = \Auth::user();
+
+            Order::create(
+                [
+                    'order_id' => $orderID,
+                    'name' => $paypal_sub['subscriber']['name']['given_name'].' '.$paypal_sub['subscriber']['name']['surname'],
+                    'card_number' => '',
+                    'card_exp_month' => '',
+                    'card_exp_year' => '',
+                    'subscription' => $subscription->name,
+                    'subscription_id' => $subscription->id,
+                    'price' => $paypal_sub['billing_info']['last_payment']['amount']['value'],
+                    'price_currency' => $paypal_sub['billing_info']['last_payment']['amount']['currency_code'],
+                    'txn_id' => '',
+                    'payment_status' => 'succeeded',
+                    'payment_type' => __('PAYPAL'),
+                    'receipt' => '',
+                    'user_id' => $authUser->id,
+                ]
+            );
             $assignPlan = $authUser->assignSubscription($subscription->id);
             if ($assignPlan['is_success']) {
                 return redirect()->route('subscriptions.index')->with('success', __('Subscription successfully activated.'));

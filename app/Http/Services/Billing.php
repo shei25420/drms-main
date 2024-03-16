@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Models\BillingPlan;
 use App\Models\BillingProduct;
+use App\Models\PaypalProduct;
 use App\Models\StripeCustomer;
 use App\Http\Interfaces\Subscription;
 use App\Http\Services\Billing\PaypalClient;
@@ -11,12 +12,11 @@ use App\Http\Services\Billing\StripeClient;
 
 class Billing implements Subscription {
     public static function createPlan ($paymentType, $subscription) {
-        $billing_product = BillingProduct::firstWhere('provider', $paymentType);
         switch ($paymentType) {
-//            case 'paypal':
-//                $plan  = \app(PaypalClient::class)->createPlan($billing_product['product_id'], $subscription->name, $subscription->price, $subscription->duration);
-//                $listedPlans = \app(PaypalClient::class)->listPlans();
-//                return $listedPlans['plans'][$listedPlans['total_items'] - 1]['id'];
+            case 'paypal':
+                $billing_product = PaypalProduct::first();
+                $plan  = \app(PaypalClient::class)->createPlan($billing_product['product_id'], $subscription->name, $subscription->price, $subscription->duration);
+                return ((array)$plan)["\x00*\x00billing_plan"]["id"];
             case 'stripe':
                 return \app(StripeClient::class)->createPlan($subscription->duration == 'Monthly' ? 'month' : 'year', $subscription->price, $subscription->name)->id;
             default:
@@ -38,8 +38,10 @@ class Billing implements Subscription {
     public static function createSubscription($paymentType, $package, $extraData = null) {
         switch ($paymentType) {
             case 'paypal':
+                $billing_product = PaypalProduct::first();
                 $billing_plan = BillingPlan::where('provider', $paymentType)->where('subscription_id', $package->id)->first();
-                return \app(PaypalClient::class)->createSubscription($billing_plan->plan_id);
+                $user = auth()->user();
+                return \app(PaypalClient::class)->createSubscription($billing_product['id'], $billing_plan['plan_id'], $user->name, $user->email);
             case 'stripe':
                 // Fetch Customer
                 $billing_product = BillingProduct::where('subscription_id', $package->id)->first();
