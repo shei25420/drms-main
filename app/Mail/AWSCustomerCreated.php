@@ -32,8 +32,8 @@ class AWSCustomerCreated extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: 'support@drmsvault.com',
-            subject: 'Welcome to DRMs Vault',
+            from: 'support@digitaldocscloud.com',
+            subject: 'Welcome to Digital Docs Cloud',
         );
     }
 

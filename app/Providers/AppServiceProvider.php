@@ -36,11 +36,11 @@ class AppServiceProvider extends ServiceProvider
                 $paypalProduct = PaypalProduct::first();
                 if (!$paypalProduct) {
                     $product = $client->createProduct(
-                        'DRMS Vault',
+                        'Digital Docs Cloud',
                         'SERVICE',
-                        'DRMS Vault. Digital Record Management System',
+                        'Digital DocsCloud. Digital Record and Document Management System',
                         'SOFTWARE',
-                        'https://drmsvault.com'
+                        'https://digitaldocscloud.com'
                     );
                     PaypalProduct::create([
                         'product_id' => $client->listProducts()['products'][0]['id']
@@ -53,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
 //                $client = new StripeClient();
 //                $stripeProduct = BillingProduct::where('provider', 'stripe')->first();
 //                if (!$stripeProduct) {
-//                    $product_id = $client->createProduct('DRMS Vault. Digital Record Management System')->id;
+//                    $product_id = $client->createProduct('Digital Docs Cloud. Digital Record Management System')->id;
 //                    BillingProduct::create([
 //                        'product_id' => $product_id,
 //                        'provider' => 'stripe',
