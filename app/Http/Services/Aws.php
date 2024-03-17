@@ -10,7 +10,7 @@ class Aws {
     public $entitlement_client;
     public $sns_client;
 
-    private $topicArn = 'arn:aws:sns:us-east-1:287250355862:aws-mp-entitlement-notification-7w2tdzvezserja2thdy0odte6';
+    private $topicArn = 'arn:aws:sns:us-east-1:287250355862:aws-mp-entitlement-notification-4pgosl68ks3yl2t183k049o0c';
     private $endpoint;
     
     public function __construct() {
