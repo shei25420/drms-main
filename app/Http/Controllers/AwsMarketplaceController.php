@@ -43,6 +43,7 @@ class AwsMarketplaceController extends Controller
             }
 
             $entitlement_results = \app(Aws::class)->getCustomerEntitlements($customer_results['CustomerIdentifier'], $customer_results['ProductCode']);
+            dd($entitlement_results);
             if (!count($entitlement_results['Entitlements'])) {
                 return redirect()->back()->with('error', 'Could not find an active subscription. If you already registered please try again');    
             }
