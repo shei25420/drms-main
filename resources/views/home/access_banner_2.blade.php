@@ -9,8 +9,6 @@
 																				<p class="wow fadeInUp" data-wow-delay="0.6s">
 																								{{ __('Digital DocsCloud revolutionizes the way you manage your digital documents. With our intuitive platform, you can effortlessly upload, organize, and access your documents from anywhere, at any time. Streamline your workflow and enhance productivity with our state-of-the-art document management system.') }}
 																				</p>
-																				<a href="#contact" class="btn btn-primary wow fadeInUp"
-																								data-wow-delay="0.9s">{{ __('Learn More') }}</a>
 																</div>
 												</div>
 								</div>

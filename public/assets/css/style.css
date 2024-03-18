@@ -20497,7 +20497,7 @@ body.rtlmode .blgcomment-list li .media .media-body h5 .comment-time {
 .intro {
   /* height: 100vh; */
   position: relative;
-  background: linear-gradient(45deg, #7538fd, #f00);
+  background: linear-gradient(45deg, #45B69F, #283480);
 }
 
 .intro::before {
@@ -20657,7 +20657,7 @@ body.rtlmode .blgcomment-list li .media .media-body h5 .comment-time {
 }
 
 .landheader-comp {
-  background: linear-gradient(45deg, #7538fd, #f00);
+  background: linear-gradient(45deg, #45B69F, #283480);
 }
 
 .landheader-comp .img-wrap {

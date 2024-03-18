@@ -1,4 +1,5 @@
-<section class="pricing py-100" id="pricing" style="background: linear-gradient(45deg, #7538fd, #f00);">
+<section class="pricing py-100" id="pricing" style="background: linear-gradient(45deg, #45B69F, #283480);
+">
 				<div class="container">
 								<div class="row">
 												<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">

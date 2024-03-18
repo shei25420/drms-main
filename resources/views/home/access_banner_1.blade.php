@@ -9,8 +9,6 @@
 																								<p class="wow fadeInUp" data-wow-duration="1.3s">
 																												{{ __('Digital DocsCloud software refers to the various features and functionalities that the software offers to help organizations manage their digital documents effectively.') }}
 																								</p>
-																								<a class="btn btn-primary btn-md wow fadeInUp" data-wow-duration="1.8s"
-																												href={{ route('register') }}>{{ __('Sign up') }}</a>
 																				</div>
 																</div>
 												</div>
