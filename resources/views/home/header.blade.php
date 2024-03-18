@@ -26,10 +26,10 @@
                                     </a>
                                 </li>
                                 <li class="menu-item"><a href="#">{{ __('Home') }}</a></li>
-                                <li class="menu-item"><a href="#powerful-intro">{{ __('About') }}</a></li>
-                                <li class="menu-item"><a href="#contact">{{ __('Contact Us') }}</a></li>
                                 <li class="menu-item"><a href="#features">{{ __('Features') }}</a></li>
                                 <li class="menu-item"><a href="#pricing">{{ __('Pricing') }}</a></li>
+                                <li class="menu-item"><a href="#powerful-intro">{{ __('About') }}</a></li>
+                                <li class="menu-item"><a href="#contact">{{ __('Contact Us') }}</a></li>
                                 <li class="menu-item">
                                     <!-- login and register routers incomplete -->
                                     <a class="btn btn-primary me-2"

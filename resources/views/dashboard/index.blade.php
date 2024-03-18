@@ -18,7 +18,7 @@
             <div class="card sale-revenue">
                 <div class="card-header">
                     <h4>{{__('Total User')}}</h4>
-                    <i class="ti-user" style="font-size: x-large; color:#f75f5f;"></i>
+                    <i class="ti-user" style="font-size: x-large; color:#F9BE4A;"></i>
                 </div>
                 <div class="card-body progressCounter">
                     <h2>
@@ -31,7 +31,7 @@
             <div class="card sale-revenue">
                 <div class="card-header">
                     <h4>{{__('Total Document')}}</h4>
-                    <i class="ti-clipboard" style="font-size: x-large; color:#f75f5f;"></i>
+                    <i class="ti-clipboard" style="font-size: x-large; color:#F9BE4A;"></i>
                 </div>
                 <div class="card-body progressCounter">
                     <h2>
@@ -44,7 +44,7 @@
             <div class="card sale-revenue">
                 <div class="card-header">
                     <h4>{{__('Total Categories')}}</h4>
-                    <i class="ti-list" style="font-size: x-large; color:#f75f5f;"></i>
+                    <i class="ti-list" style="font-size: x-large; color:#F9BE4A;"></i>
                 </div>
                 <div class="card-body progressCounter">
                     <h2>
@@ -59,7 +59,7 @@
             <div class="card sale-revenue">
                 <div class="card-header">
                     <h4>{{__('Total Reminder')}}</h4>
-                    <i class="ti-bell" style="font-size: x-large; color:#f75f5f;"></i>
+                    <i class="ti-bell" style="font-size: x-large; color:#F9BE4A;"></i>
                 </div>
                 <div class="card-body progressCounter">
                     <h2>
@@ -72,7 +72,7 @@
             <div class="card sale-revenue">
                 <div class="card-header">
                     <h4>{{__('Today Reminder')}}</h4>
-                    <i class="ti-calendar" style="font-size: x-large; color:#f75f5f;"></i>
+                    <i class="ti-calendar" style="font-size: x-large; color:#F9BE4A;"></i>
                 </div>
                 <div class="card-body progressCounter">
                     <h2>
@@ -85,7 +85,7 @@
             <div class="card sale-revenue">
                 <div class="card-header">
                     <h4>{{__('Total Support')}}</h4>
-                    <i class="ti-headphone" style="font-size: x-large; color:#f75f5f;"></i>
+                    <i class="ti-headphone" style="font-size: x-large; color:#F9BE4A;"></i>
                 </div>
                 <div class="card-body progressCounter">
                     <h2>
