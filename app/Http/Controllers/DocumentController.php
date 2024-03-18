@@ -63,9 +63,9 @@ class DocumentController extends Controller
 
             $ids = \Auth::user()->parentId();
             $authUser = \App\Models\User::find($ids);
-            $total_document = $authUser->totalDocument();
+            $total_document = $authUser->document_usage;
             $subscription = Subscription::find($authUser->subscription);
-            if ($total_document < $subscription->total_document || $subscription->total_document == 0) {
+            if (($total_document < $subscription->total_document) || $subscription->total_document == 0) {
                 $document = new Document();
                 $document->name = $request->name;
                 $document->category_id = $request->category_id;
@@ -101,12 +101,16 @@ class DocumentController extends Controller
                 $data['description'] = __('New document') . ' ' . $document->name . ' ' . __('created by') . ' ' . \Auth::user()->name;
                 $data['document_id'] = $document->id;
                 DocumentHistory::history($data);
+
+                $authUser->document_usage++;
+                $authUser->save();
                 return redirect()->back()->with('success', __('Document successfully created!'));
             } else {
                 return redirect()->back()->with('error', __('Your document limit is over, Please upgrade your subscription.'));
             }
 
-        } else {
+        }
+        else {
             return redirect()->back()->with('error', __('Permission Denied!'));
         }
     }

@@ -8,7 +8,7 @@
 <body>
 				<p>Dear Sir/Madam,
 
-								Welcome to {{ env('APP_NAME') }} Vault! We're thrilled to have you on board and excited for the journey ahead.
+								Welcome to {{ env('APP_NAME') }}! We're thrilled to have you on board and excited for the journey ahead.
 								Thank you for choosing our platform to manage your documents.<br><br>
 
 								Here are a few steps to help you get started with {{ env('APP_NAME') }}: <br><br>
@@ -23,7 +23,7 @@
 								hesitate to reach out to our support team via email. We're here to help you succeed. <br><br>
 
 								We're committed to providing you with an exceptional experience, and we're confident that {{ env('APP_NAME') }}
-								vault will empower you to manage, retrieve, and store your documents. <br><br>
+								will empower you to manage, retrieve, and store your documents. <br><br>
 
 								Once again, welcome aboard! We look forward to seeing your success with {{ env('APP_NAME') }}. <br><br>
 

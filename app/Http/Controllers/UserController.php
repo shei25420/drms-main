@@ -103,9 +103,9 @@ class UserController extends Controller
 
                 $ids     = \Auth::user()->parentId();
                 $authUser=\App\Models\User::find($ids);
-                $total_user   = $authUser->totalUser();
+                $total_user   = $authUser->user_usage;
                 $subscription = Subscription::find($authUser->subscription);
-                if($total_user < $subscription->total_user || $subscription->total_user == 0)
+                if(($total_user < $subscription->total_user) || $subscription->total_user == 0)
                 {
                     $role_r          = Role::findById($request->role);
                     $user            = new User();
@@ -120,8 +120,9 @@ class UserController extends Controller
 
                     $user->assignRole($role_r);
 
+                    $authUser->user_usage++;
+                    $authUser->save();
                     return redirect()->route('users.index')->with('success', __('User successfully created!'));
-
                 }
                 else
                 {

@@ -2,29 +2,31 @@
 
 namespace App\Http\Helpers;
 
+use App\Models\AwsSubscription;
 use Error;
 use App\Models\User;
 use App\Models\AwsCustomer;
 use App\Models\Subscription;
 
 class AwsHelper {
-    public static function handleActiveSubscription ($customerId, $dimension, $expiryDate) {
+    public static function handleActiveSubscription (string $customerId, string $dimension, string $expiryDate, int $quantity)
+    {
         $subscription = Subscription::where('name', $dimension)->first();
         if (!$subscription) throw new Error("Could not find a package with provided dimensions");
         
         $aws_customer = AwsCustomer::where('customer_id', $customerId)->first();
-        if (!$aws_customer) {
-            $aws_customer = AwsCustomer::create([
-                'subscription_id' => $subscription->id,
-                'customer_id' => $customerId,
-                'expiry_date' => $expiryDate
-            ]);
-        } else if ($aws_customer->subscription_id !== $subscription->id) {
-            //Update Subscription
-            $user = User::find($aws_customer->user_id);
-            $user->subscription = $subscription->id;
-            $user->save();
-        }
+        if ($aws_customer) throw new Error("Aws Account Already Set Up");
+
+        $aws_customer = AwsCustomer::create([
+            'customer_id' => $customerId,
+        ]);
+
+        return AwsSubscription::create([
+            'subscription_id' => $subscription->id,
+            'aws_customer_id' => $aws_customer->id,
+            'quantity' => $quantity,
+            'expiry_date' => $expiryDate
+        ]);
     }
 
     public static function handlePendingSubscription ($customerId) {
