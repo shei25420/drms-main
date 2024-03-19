@@ -87,11 +87,11 @@ class AwsMarketplaceController extends Controller
             $sub_id = null;
             $expiry_date = null;
 
-            $subscriptionModel = Subscription::findOrFail($aws_customer->subscription_id);
             $total_document_usage = 0;
             $total_user_usage = 0;
 
             foreach ($aws_customer->subscriptions as $subscription) {
+                $subscriptionModel = Subscription::findOrFail($subscription->id);
                 $document_usage = $subscription->quantity > 1 ? -($subscriptionModel->total_document * $subscription->quantity) : 0;
                 $total_document_usage += $document_usage;
 
