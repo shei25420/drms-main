@@ -12,6 +12,7 @@ use App\Http\Services\Billing;
 use App\Models\StripeCustomer;
 use App\Http\Helpers\AwsHelper;
 use App\Mail\AWSCustomerCreated;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -43,18 +44,17 @@ class AwsMarketplaceController extends Controller
             }
 
             $entitlement_results = \app(Aws::class)->getCustomerEntitlements($customer_results['CustomerIdentifier'], $customer_results['ProductCode']);
-            dd($entitlement_results);
             if (!count($entitlement_results['Entitlements'])) {
                 return redirect()->back()->with('error', 'Could not find an active subscription. If you already registered please try again');    
             }
 
-            AwsHelper::handleActiveSubscription($customer_results['CustomerIdentifier'], $entitlement_results['Entitlements'][0]['Dimension'], $entitlement_results['Entitlements'][0]['ExpirationDate']);
+            foreach ($entitlement_results['Entitlements'] as $entitlement) {
+                AwsHelper::handleActiveSubscription($customer_results['CustomerIdentifier'], $entitlement['Dimension'], $entitlement['ExpirationDate'], $entitlement['EntitlementValue']);
+            }
+
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
         } catch (\Throwable $th) {
-            //throw $th;
-            dd($th);
-//            dd($th->getMessage(), $th->getCode());
-            return redirect()->back()->with('error', 'Something went wrong, please try again later.');
+            return redirect('/signup')->with('error', $th->getMessage());
         }
     }
 
@@ -65,23 +65,48 @@ class AwsMarketplaceController extends Controller
             if (!$aws_customer) {
                 return redirect()->back()->with('error', 'Account not found. Please contact support if it persists');    
             }
-            
+
             //Generate new Name
             $name = bin2hex(random_bytes(6));
-            
             //Generate new password
             $password = bin2hex(random_bytes(8));
+
+            //Create New User
             $user = User::create([
                 'name' => $name,
                 'email' => $request->email,
                 'password' => Hash::make($password),
                 'type' => 'admin',
                 'lang' => 'english',
-                'subscription' => $aws_customer->subscription_id,
-                'subscription_expire_date' => $aws_customer->expiry_date,
                 'email_verified_at' => now()
             ]);
 
+            //Iterate And Assign Subscriptions To User
+            $sub_id = null;
+            $expiry_date = null;
+
+            $subscriptionModel = Subscription::findOrFail($aws_customer->subscription_id);
+            $total_document_usage = 0;
+            $total_user_usage = 0;
+
+            foreach ($aws_customer->subscriptions as $subscription) {
+                $document_usage = $subscription->quantity > 1 ? -($subscriptionModel->total_document * $subscription->quantity) : 0;
+                $total_document_usage += $document_usage;
+
+                $user_usage = $subscription->quantity > 1 ? -($subscriptionModel->total_document * $subscription->quantity) : 0;
+                $total_user_usage += $user_usage;
+
+                $sub_id = $subscription->id;
+                $expiry_date = $subscription->expiry_date;
+            }
+
+            $user->user_usage = $total_user_usage;
+            $user->document_usage = $total_document_usage;
+            $user->subscription = $sub_id;
+            $user->subscription_expire_date = $expiry_date;
+            $user->save();
+
+            $user->assignSubscription($sub_id);
             $aws_customer->user_id = $user->id;
             $aws_customer->save();
 

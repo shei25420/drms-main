@@ -33,8 +33,8 @@
                                 <span>/ {{$subscription->duration}}</span></div>
                         </div>
                         <ul class="cdxprice-list">
-                            <li><span>{{$subscription->total_user}}</span>{{__('User Limit')}}</li>
-                            <li><span>{{$subscription->total_document}}</span>{{__('Document Limit')}}</li>
+                            <li><span>{{$subscription->total_user - (Auth::user()->subscription == $subscription->id ? Auth::user()->user_usage : 0)}}</span>{{__('User Limit')}}</li>
+                            <li><span>{{$subscription->total_document  - (Auth::user()->subscription == $subscription->id ? Auth::user()->document_usage : 0)}}</span>{{__('Document Limit')}}</li>
                             <li>
                                 <div class="delet-mail">
                                     @if($subscription->enabled_document_history==1)

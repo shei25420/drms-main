@@ -16,12 +16,9 @@ return new class extends Migration
         Schema::create('aws_customers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('subscription_id');
-            $table->timestamp('expiry_date');
             $table->string('customer_id');
             $table->timestamps();
 
-            $table->foreign('subscription_id')->references('id')->on('subscriptions')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

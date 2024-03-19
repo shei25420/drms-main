@@ -26,7 +26,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'subscription_expire_date',
         'parent_id',
         'is_active',
-        'email_verified_at'
+        'email_verified_at',
+        'user_usage',
+        'document_usage'
     ];
 
 
