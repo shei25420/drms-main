@@ -20,7 +20,7 @@ class AwsHelper {
         $aws_customer = AwsCustomer::create([
             'customer_id' => $customerId,
         ]);
-
+        dd($aws_customer);
         return AwsSubscription::create([
             'subscription_id' => $subscription->id,
             'aws_customer_id' => $aws_customer->id,
