@@ -13,6 +13,6 @@ class AwsCustomer extends Model
     protected $fillable = ['email', 'customer_id', 'user_id', 'expiry_date'];
 
     public function aws_subscriptions (): HasMany {
-        return $this->hasMany(AwsSubscription::class);
+        return $this->hasMany(AwsSubscription::class, 'aws_customer_id', 'id');
     }
 }
