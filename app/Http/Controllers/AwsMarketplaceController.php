@@ -55,7 +55,8 @@ class AwsMarketplaceController extends Controller
 
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
         } catch (\Throwable $th) {
-            return redirect('/signup')->with('error', $th->getMessage());
+            dd($th);
+            return redirect('/register')->with('error', $th->getMessage());
         }
     }
 
