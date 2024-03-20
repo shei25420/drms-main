@@ -43,16 +43,16 @@
     @include('home.access_banner_1')
 
     <!-- access banner 2 start-->
-    @include('home.access_banner_2')
+    @include('home.features_2')
 
     <!-- Pricing Section -->
     @include('home.pricing')
 
     <!-- Call to Action (CTA) Section -->
-    @include('home.cta')
+    @include('home.features_1')
 
-    <!-- Contact Section -->
-    @include('home.contact')
+    {{-- <!-- Contact Section -->
+    @include('home.contact') --}}
 
     <!-- footer start-->
     @include('home.footer')

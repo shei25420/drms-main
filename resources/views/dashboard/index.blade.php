@@ -18,7 +18,7 @@
             <div class="card sale-revenue">
                 <div class="card-header">
                     <h4>{{__('Total User')}}</h4>
-                    <i class="ti-user" style="font-size: x-large; color:#F9BE4A;"></i>
+                    <i class="ti-user" style="font-size: x-large; color:F9BE4A;"></i>
                 </div>
                 <div class="card-body progressCounter">
                     <h2>
