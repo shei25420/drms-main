@@ -108,6 +108,10 @@ class AwsMarketplaceController extends Controller
             $user->subscription_expire_date = $expiry_date;
             $user->save();
 
+            event(new Registered($user));
+            $role_r = Role::findByName('owner');
+            $user->assignRole($role_r);
+
             $user->assignSubscription($sub_id);
             $aws_customer->user_id = $user->id;
             $aws_customer->save();
