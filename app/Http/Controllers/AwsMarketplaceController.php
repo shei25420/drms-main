@@ -64,7 +64,6 @@ class AwsMarketplaceController extends Controller
         try {
             $customer_id = $request->customer_id;
             $aws_customer = AwsCustomer::where('customer_id', $customer_id)->with('aws_subscriptions')->first();
-            dd($aws_customer);
             if (!$aws_customer) {
                 return redirect()->back()->with('error', 'Account not found. Please contact support if it persists');    
             }
