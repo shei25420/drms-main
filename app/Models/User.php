@@ -96,8 +96,7 @@ class User extends Authenticatable implements MustVerifyEmail
             }
             $this->save();
 
-            $users = User::where('parent_id', '=', \Auth::user()->parentId())->where('type', '!=', 'super admin')->where('type', '!=', 'admin')->get();
-
+            $users = User::where('parent_id', '=', $this->parentId())->where('type', '!=', 'super admin')->where('type', '!=', 'admin')->get();
 
 
             if($subscription->total_user == 0)
