@@ -1,10 +1,17 @@
 <section class="pricing py-100" id="pricing" style="background: linear-gradient(45deg, #45B69F, #283480);
 ">
+	<div class="row">
+		<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+			<div class="land-title">
+				<h2 class="wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: fadeInUp; color: #FFFFFF;">Pricing</h2>
+			</div>
+		</div>
+	</div>
 	<div class="container">
-		<div class="row">
-			@foreach ($subscriptions as $subscription)
+		<div class="row d-flex justify-content-center">
+			@foreach ($subscriptions as $index => $subscription)
 				<div class="col-md-3 col-sm-6">
-					<div class="pricingTable">
+					<div class="pricingTable {{ $index == 1 ? "blue" : "" }} {{ $index == 2 ? "green" : "" }}">
 						<div class="pricingTable-header">
 {{--							<i class="fa fa-adjust"></i>--}}
 							<div class="price-value"> ${{ $subscription->price  }} <span class="month">{{ $subscription->duration  }}</span> </div>

@@ -158,16 +158,16 @@
 
     .pricingTable.green .heading,
     .pricingTable.green .price-value {
-        color: #40c952
+        color: #00b89f
     }
 
     .pricingTable.green .pricingTable-signup a,
     .pricingTable.green:hover .pricingTable-header {
-        background: #40c952
+        background: #00b89f
     }
 
     .pricingTable.green .pricingTable-signup a:hover {
-        box-shadow: 0 0 10px #40c952
+        box-shadow: 0 0 10px #00b89f
     }
 
     .pricingTable.blue:hover .price-value,
