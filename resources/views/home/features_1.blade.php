@@ -5,7 +5,7 @@
                 <div class="header-detail">
                     <div>
                         <h2 class="wow fadeInUp" data-wow-duration="0.8s" style="visibility: visible; animation-duration: 0.8s; animation-name: fadeInUp;">500+ Documents</h2>
-                        <p class="wow fadeInUp" data-wow-duration="1.3s" style="visibility: visible; animation-duration: 1.3s; animation-name: fadeInUp;">Document and Records Management System (DRMS SaaS) software refers to the various features and functionalities that the software offers to help organizations manage their digital documents effectively.</p><a class="btn btn-primary btn-md wow fadeInUp" data-wow-duration="1.8s" href="javascript:void(0);" style="visibility: visible; animation-duration: 1.8s; animation-name: fadeInUp;">Exploar now</a>
+                        <p class="wow fadeInUp" data-wow-duration="1.3s" style="visibility: visible; animation-duration: 1.3s; animation-name: fadeInUp;">Document and Records Management System (DRMS SaaS) software refers to the various features and functionalities that the software offers to help organizations manage their digital documents effectively.</p><a class="btn btn-primary btn-md wow fadeInUp" data-wow-duration="1.8s" href="javascript:void(0);" style="visibility: visible; animation-duration: 1.8s; animation-name: fadeInUp;">Explore now</a>
                     </div>
                 </div>
             </div>
