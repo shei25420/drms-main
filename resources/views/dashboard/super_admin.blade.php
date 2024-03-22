@@ -28,7 +28,7 @@
 												<div class="card sale-revenue">
 																<div class="card-header">
 																				<h4>{{ __('Total Organizations') }}</h4>
-																				<i class="ti-world" style="font-size: x-large; color:#f75f5f;"></i>
+																				<i class="ti-world" style="font-size: x-large; color:#44b59e;"></i>
 																</div>
 																<div class="card-body progressCounter">
 																				<h2>{{ $data['totalOrganization'] }}</h2>
@@ -39,7 +39,7 @@
 												<div class="card sale-revenue">
 																<div class="card-header">
 																				<h4>{{ __('Total Subscription') }}</h4>
-																				<i class="ti-clipboard" style="font-size: x-large; color:#f75f5f;"></i>
+																				<i class="ti-clipboard" style="font-size: x-large; color:#44b59e;"></i>
 																</div>
 																<div class="card-body progressCounter">
 																				<h2>{{ $data['totalSubscription'] }}</h2>
@@ -50,7 +50,7 @@
 												<div class="card sale-revenue">
 																<div class="card-header">
 																				<h4>{{ __('Total Transaction') }}</h4>
-																				<i class="ti-receipt" style="font-size: x-large; color:#f75f5f;"></i>
+																				<i class="ti-receipt" style="font-size: x-large; color:#44b59e;"></i>
 																</div>
 																<div class="card-body progressCounter">
 																				<h2>{{ $data['totalTransaction'] }}</h2>
@@ -63,7 +63,7 @@
 												<div class="card sale-revenue">
 																<div class="card-header">
 																				<h4>{{ __('Total Income') }}</h4>
-																				<i class="ti-wallet" style="font-size: x-large; color:#f75f5f;"></i>
+																				<i class="ti-wallet" style="font-size: x-large; color:#44b59e;"></i>
 																</div>
 																<div class="card-body progressCounter">
 																				<h2>{{ env('CURRENCY_SYMBOL') . $data['totalIncome'] }}</h2>
@@ -74,7 +74,7 @@
 												<div class="card sale-revenue">
 																<div class="card-header">
 																				<h4>{{ __('Total Notes') }}</h4>
-																				<i class="ti-notepad" style="font-size: x-large; color:#f75f5f;"></i>
+																				<i class="ti-notepad" style="font-size: x-large; color:#44b59e;"></i>
 																</div>
 																<div class="card-body progressCounter">
 																				<h2>{{ $data['totalNote'] }}</h2>
@@ -86,7 +86,7 @@
 												<div class="card sale-revenue">
 																<div class="card-header">
 																				<h4>{{ __('Total Contact') }}</h4>
-																				<i class="ti-wallet" style="font-size: x-large; color:#f75f5f;"></i>
+																				<i class="ti-wallet" style="font-size: x-large; color:#44b59e;"></i>
 																</div>
 																<div class="card-body progressCounter">
 																				<h2>{{ $data['totalContact'] }}</h2>

@@ -138,7 +138,7 @@ var options = {
     },
     labels: {
       style: {
-        colors: '#f75f5f',
+        colors: '#44b59e',
         fontSize: '14px',
         fontWeight: 500,
         fontFamily: 'Roboto, sans-serif'
@@ -149,7 +149,7 @@ var options = {
     categories: ["Iran", "Spain", "Canada", "China", "Japan", "Usa", "India"],
     labels: {
       style: {
-        colors: '#f75f5f',
+        colors: '#44b59e',
         fontSize: '14px',
         fontWeight: 500,
         fontFamily: 'Roboto, sans-serif'
@@ -249,7 +249,7 @@ var options = {
     max: 80,
     labels: {
       style: {
-        colors: '#f75f5f',
+        colors: '#44b59e',
         fontSize: '14px',
         fontWeight: 500,
         fontFamily: 'Roboto, sans-serif'
@@ -266,7 +266,7 @@ var options = {
     },
     labels: {
       style: {
-        colors: '#f75f5f',
+        colors: '#44b59e',
         fontSize: '14px',
         fontWeight: 500,
         fontFamily: 'Roboto, sans-serif'
