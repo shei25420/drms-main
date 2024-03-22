@@ -27,7 +27,7 @@
 																																<li class="menu-item"><a href="#">{{ __('Home') }}</a></li>
 																																<li class="menu-item"><a href="#features">{{ __('Features') }}</a></li>
 																																<li class="menu-item"><a href="#pricing">{{ __('Pricing') }}</a></li>
-																																<li class="menu-item">
+																																<li class="menu-item" style="color: #fffff">
 																																				<!-- login and register routers incomplete -->
 																																				<a class="btn btn-primary me-2" href="{{ route('login') }}">{{ __('Login') }} </a>
 																																				<a class="btn btn-primary" href="{{ route('register') }}">{{ __('Register') }}

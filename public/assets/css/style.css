@@ -20411,9 +20411,9 @@ body.rtlmode .blgcomment-list li .media .media-body h5 .comment-time {
 
 .land-header {
   -webkit-padding-before: 20px;
-  padding-block-start: 20px;
+  padding-block-start: 5px;
   -webkit-padding-after: 20px;
-  padding-block-end: 20px;
+  padding-block-end: 5px;
 }
 
 .land-header.fixed {
@@ -20531,7 +20531,7 @@ body.rtlmode .blgcomment-list li .media .media-body h5 .comment-time {
   margin-block-end: 15px;
 }
 
-.intro .intro-contain p {
+.5pxintro .intro-contain p {
   color: #fff;
   font-size: calc(16px + 2 * (100vw - 420px) / 1500);
 }
@@ -20667,7 +20667,7 @@ body.rtlmode .blgcomment-list li .media .media-body h5 .comment-time {
 
 .landheader-comp .header-detail {
   -webkit-padding-end: 60px;
-  padding-inline-end: 60px;
+  5pxpadding-inline-end: 60px;
   position: sticky;
   top: 280px;
   width: 100%;
@@ -20966,7 +20966,7 @@ body.rtlmode .blgcomment-list li .media .media-body h5 .comment-time {
     -webkit-margin-before: 10px;
     margin-block-start: 10px;
   }
-
+  5px
   .landheader-comp .header-detail .btn {
     -webkit-margin-before: 25px;
     margin-block-start: 25px;
@@ -21000,7 +21000,7 @@ body.rtlmode .blgcomment-list li .media .media-body h5 .comment-time {
 
   .intro .intro-contain .btn {
     -webkit-margin-before: 25px;
-    margin-block-start: 25px;
+    5pxmargin-block-start: 25px;
   }
 
   .demo-grid .demo-detail {
@@ -21037,5 +21037,5 @@ body.rtlmode .blgcomment-list li .media .media-body h5 .comment-time {
   }
 }
 .auth-header .img-fluid {
-  width: 250px !important;
+  width: 250px !important;5px
 }
