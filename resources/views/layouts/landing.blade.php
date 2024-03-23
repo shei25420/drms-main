@@ -9,7 +9,7 @@
     <meta name="keywords" content="">
     <title>{{ env('APP_NAME') }}</title>
     <!-- shortcut icon-->
-    <link rel="shortcut icon" href="{{ asset(Storage::url('upload/logo')) . '/favicon.png' }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset(Storage::url('upload/logo')) . '/favicon.png' }}" type="image/x-icon">
     <!-- Fonts css-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
