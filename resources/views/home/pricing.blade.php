@@ -14,9 +14,9 @@
 					<div class="pricingTable {{ $index == 1 ? "blue" : "" }} {{ $index == 2 ? "green" : "" }}">
 						<div class="pricingTable-header">
 {{--							<i class="fa fa-adjust"></i>--}}
-							<div class="price-value"> ${{ $subscription->name  }} <span class="month">{{ $subscription->duration  }}</span> </div>
+							<div class="price-value">{{ $subscription->name  }} <span class="month">{{ $subscription->duration  }}</span> </div>
 						</div>
-						<h3 class="heading">{{ $subscription->price  }}</h3>
+						<h3 class="heading">${{ $subscription->price  }}</h3>
 						<div class="pricing-content">
 							<ul>
 								<li><b>{{ $subscription->total_user  }}</b> User Limit</li>
