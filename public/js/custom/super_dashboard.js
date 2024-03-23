@@ -74,7 +74,7 @@ var options = {
                 return y.toFixed(0);
             },
             style: {
-                colors: '#f75f5f',
+                colors: '#44b59e',
                 fontSize: '14px',
                 fontWeight: 500,
                 fontFamily: 'Roboto, sans-serif'
@@ -91,7 +91,7 @@ var options = {
         },
         labels: {
             style: {
-                colors: '#f75f5f',
+                colors: '#44b59e',
                 fontSize: '14px',
                 fontWeight: 500,
                 fontFamily: 'Roboto, sans-serif'
@@ -195,7 +195,7 @@ var options = {
                 return y.toFixed(0);
             },
             style: {
-                colors: '#f75f5f',
+                colors: '#44b59e',
                 fontSize: '14px',
                 fontWeight: 500,
                 fontFamily: 'Roboto, sans-serif'
@@ -212,7 +212,7 @@ var options = {
         },
         labels: {
             style: {
-                colors: '#f75f5f',
+                colors: '#44b59e',
                 fontSize: '14px',
                 fontWeight: 500,
                 fontFamily: 'Roboto, sans-serif'
