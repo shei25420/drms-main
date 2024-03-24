@@ -11,16 +11,15 @@
 <aside class="codex-sidebar sidebar-{{ $settings['sidebar_mode'] }}">
 				<div class="logo-gridwrap">
 								<a class="codexbrand-logo" href="{{ route('home') }}">
-												<img style="height: 80px;" class="img-fluid" src="{{ asset('/storage/upload/logo/logo1.png') }}"
-																alt="Digital DocsCloud logo">
+												<img style="height: 80px;" class="img-fluid" src="{{ $logo }}" alt="Digital DocsCloud logo">
 								</a>
 								<a class="codex-darklogo" href="{{ route('home') }}">
-												<img class="img-fluid" src="{{ asset('/storage/upload/logo/logo1.png') }}" alt="Digital DocsCloud logo"></a>
+												<img class="img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt="Digital DocsCloud logo"></a>
 								<div class="sidebar-action"><i data-feather="menu"></i></div>
 				</div>
 				<div class="icon-logo">
 								<a href="{{ route('home') }}">
-												<img class="img-fluid" src="{{ asset('/storage/upload/logo/logo1.png') }}" alt="Digital DocsCloud logo">
+												<img class="img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt="Digital DocsCloud logo">
 								</a>
 				</div>
 				<div class="codex-menuwrapper">
