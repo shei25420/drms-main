@@ -9,9 +9,8 @@
 																												Documents</h2>
 																								<p class="wow fadeInUp" data-wow-duration="1.3s"
 																												style="visibility: visible; animation-duration: 1.3s; animation-name: fadeInUp;">Digital
-																												DocsCloud software refers to the various features and
-																												functionalities that the software offers to help organizations manage their digital
-																												documents effectively.</p>
+																												DocsCloud Software is an innovative document-storing application designed to streamline your
+																												document management process while prioritizing security and accessibility.</p>
 																				</div>
 																</div>
 												</div>
