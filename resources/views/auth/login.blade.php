@@ -15,11 +15,11 @@
 
         </div>
         {{Form::open(array('route'=>'login','method'=>'post','id'=>'loginForm','class'=> 'login-form' ))}}
-            @if(\Illuminate\Support\Facades\Session::has("error"))
+            @if(session()->has('error'))
                 <div class="row">
                     <div class="col">
                         <div class="alert alert-danger" role="alert">
-                            {{ \Illuminate\Support\Facades\Session::get("error")  }}
+                            {{ session()->get('error')  }}
                         </div>
                     </div>
                 </div>
