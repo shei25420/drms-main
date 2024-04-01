@@ -125,7 +125,7 @@ class UserController extends Controller
                     if ($authenticated->awsCustomer) {
                         AwsUsage::create([
                             'subscription_id' => $authenticated->subscription,
-                            'aws_customer_id' => $authenticated->aws_customer_id,
+                            'aws_customer_id' => $authenticated->awsCustomer->id,
                             'dimension' => 'user',
                             'usage' => 1
                         ]);
