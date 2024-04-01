@@ -12,6 +12,7 @@ use App\Http\Services\Billing;
 use App\Models\StripeCustomer;
 use App\Http\Helpers\AwsHelper;
 use App\Mail\AWSCustomerCreated;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
@@ -55,7 +56,8 @@ class AwsMarketplaceController extends Controller
 
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
         } catch (\Throwable $th) {
-            return redirect('/login')->with('error', $th->getMessage());
+            Session::flash("error", $th->getMessage());
+            return redirect('/login');
         }
     }
 
