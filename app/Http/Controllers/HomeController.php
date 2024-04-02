@@ -48,7 +48,6 @@ class HomeController extends Controller
                 $data['settings']=Custom::settings();
                 $data['documentByCategory'] = $this->documentByCategory();
                 $data['documentBySubCategory'] = $this->documentBySubCategory();
-
                 return view('dashboard.index', compact('data'));
             }
         } else {
