@@ -16,8 +16,7 @@
     <meta name="csrf-token" content="{{csrf_token()}}">
     <title>{{!empty($app_name)?$app_name:env('APP_NAME')}} - @yield('page-title') </title>
     <!-- shortcut icon-->
-    <link rel="icon" href="{{$favicon}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{$favicon}}" type="image/x-icon">
+    <link rel="icon" href="{{ asset(Storage::url('upload/logo')) . '/favicon.png?v=1' }}" type="image/png">
     <!-- Fonts css-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
