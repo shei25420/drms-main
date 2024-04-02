@@ -60,21 +60,21 @@
 
 <script>
     (() => {
-        const mode = localStorage.getItem("_mode");
-        const lightMode = "lightmode";
-        const darkMode = "darkmode";
-        const className = mode === "dark" ? darkMode  : lightMode ;
-
-        if (mode) {
-            if (!document.body.classList.contains(className)) {
-                document.body.classList.add(className);
-            }
-        }
-
-        document.getElementById("actionDark").addEventListener("click", function (e) {
-            document.body.classList[document.body.classList.length - 1] === lightMode ? localStorage.setItem("_mode", "light") : localStorage.setItem("_mode", "dark");
-        });
-        console.log(localStorage.getItem("_mode"));
+        // const mode = localStorage.getItem("_mode");
+        // const lightMode = "lightmode";
+        // const darkMode = "darkmode";
+        // const className = mode === "dark" ? darkMode  : lightMode ;
+        //
+        // if (mode) {
+        //     if (!document.body.classList.contains(className)) {
+        //         document.body.classList.add(className);
+        //     }
+        // }
+        //
+        // document.getElementById("actionDark").addEventListener("click", function (e) {
+        //     document.body.classList[document.body.classList.length - 1] === lightMode ? localStorage.setItem("_mode", "light") : localStorage.setItem("_mode", "dark");
+        // });
+        // console.log(localStorage.getItem("_mode"));
     })();
 </script>
 </body>

@@ -4,6 +4,8 @@
 
     $favicon_name = $admin_favicon ? $admin_favicon : 'favIcon.png';
     $favicon = \Illuminate\Support\Facades\Storage::disk('public')->url('upload/favicons/'.$favicon_name);
+
+    $settings=\App\Models\Custom::settings();
 @endphp
 <head>
     <!-- Required meta tags-->
@@ -43,7 +45,7 @@
 
     <!-- Custom css-->
     @php
-        $style=$settings['theme_color']=='color1'?'color4.css':$settings['theme_color'].'.css';
+        $style=$settings['theme_color']=='color1'? 'color4.css':$settings['theme_color'].'.css';
     @endphp
     <link href="{{ asset('assets/css/'.$style) }}" id="customstyle" rel="stylesheet">
 
