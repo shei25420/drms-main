@@ -45,12 +45,6 @@
 																								<span>{{ __('Owners') }}</span>
 																				</a>
 																</li>
-																<li class="menu-item {{ Request::route()->getName() == 'contact.index' ? 'active' : '' }}">
-																				<a href="{{ route('contact.index') }}">
-																								<div class="icon-item"><i data-feather="phone-call"></i></div>
-																								<span>{{ __('Contacts') }}</span>
-																				</a>
-																</li>
 																<li
 																				class="menu-item {{ Request::route()->getName() == 'support.index' || Request::route()->getName() == 'support.show' ? 'active' : '' }}">
 																				<a href="{{ route('support.index') }}">
@@ -210,14 +204,6 @@
 																								<h5>{{ __('Additional') }}</h5>
 																				</li>
 
-																				@if (Gate::check('manage contact'))
-																								<li class="menu-item {{ Request::route()->getName() == 'contact.index' ? 'active' : '' }}">
-																												<a href="{{ route('contact.index') }}">
-																																<div class="icon-item"><i data-feather="phone-call"></i></div>
-																																<span>{{ __('Contacts') }}</span>
-																												</a>
-																								</li>
-																				@endif
 																				@if (Gate::check('manage support'))
 																								<li
 																												class="menu-item {{ Request::route()->getName() == 'support.index' || Request::route()->getName() == 'support.show' ? 'active' : '' }}">
