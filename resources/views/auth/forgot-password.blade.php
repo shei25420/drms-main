@@ -7,9 +7,9 @@
 								<div class="auth-header">
 												<div class="codex-brand">
 																<a href="/">
-																				<img class="img-fluid light-logo" src="{{ asset('assets/images/logo/default-monochrome.svg') }}"
+																				<img class="img-fluid light-logo" src="{{ asset('assets/images/logo/logo.png') }}"
 																								alt="">
-																				<img class="img-fluid dark-logo" src="{{ asset('assets/images/logo/default-monochrome.svg') }}"
+																				<img class="img-fluid dark-logo" src="{{ asset('assets/images/logo/logo.png') }}"
 																								alt="">
 																</a>
 												</div>

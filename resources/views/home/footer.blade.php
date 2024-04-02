@@ -8,19 +8,22 @@
 								<div class="row">
 												<!-- Helpful links -->
 												<div class="col d-flex align-items-center">
+													<a href="/" class="d-block mb-3">
+														<img style="height: 50px; width: 50px !important; margin-right: 50px"
+															 class="img-fluid wow fadeInUp landing-logo" src="{{ $logo }}" alt="">
+													</a>
 																<div class="d-flex">
-																				<a href="/" class="d-block mb-3">
-																								<img style="height: 50px; width: 50px !important; margin-right: 50px"
-																												class="img-fluid wow fadeInUp landing-logo" src="{{ $logo }}" alt="">
-																				</a>
 																				<a href="#" class="text-decoration-none me-3">Home</a>
 																				<a href="#features" class="text-decoration-none me-3">Features</a>
+																	<a href="/terms" class="text-decoration-none me-3">Terms And Conditions</a>
+																	<a href="/privacy" class="text-decoration-none me-3">Privacy Policy</a>
 																</div>
 												</div>
 
 												<!-- Logo and copyright -->
 												<div class="col text-end">
-																<p class="mb-0">{{ __('Copyright') }} {{ date('Y') }} {{ '©' }} {{ env('APP_NAME') }}
+
+																<p class="p-10">{{ __('Copyright') }} {{ date('Y') }} {{ '©' }} {{ env('APP_NAME') }}
 																				{{ 'All rights reserved' }}
 																</p>
 												</div>

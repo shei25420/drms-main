@@ -56,7 +56,7 @@ class HomeController extends Controller
                 die;
             } else {
                 $subscriptions = Subscription::get();
-                return view('layouts.landing', compact('subscriptions'));
+                return view('home.index', compact('subscriptions'));
             }
 
         }
@@ -133,5 +133,13 @@ class HomeController extends Controller
         $data['data']=$documents;
         $data['category']=$cat;
         return $data;
+    }
+
+    public function terms () {
+        return view('terms.index');
+    }
+
+    public function privacy ( ){
+        return view('privacy.index');
     }
 }
