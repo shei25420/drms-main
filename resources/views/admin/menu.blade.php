@@ -14,7 +14,7 @@
 												<img style="height: 80px;" class="img-fluid" src="{{ $logo }}" alt="Digital DocsCloud logo">
 								</a>
 								<a class="codex-darklogo" href="{{ route('home') }}">
-												<img class="img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt="Digital DocsCloud logo"></a>
+												<img style="height: 80px;" class="img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt="Digital DocsCloud logo"></a>
 								<div class="sidebar-action"><i data-feather="menu"></i></div>
 				</div>
 				<div class="icon-logo">
