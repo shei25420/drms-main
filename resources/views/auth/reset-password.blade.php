@@ -10,6 +10,7 @@
             <p>{{__('You have Successfully Verified Your Account. Enter')}} <br> {{__('New Passeord Below.')}}</p>
         </div>
         {{Form::open(array('route'=>'password.update','method'=>'post','id'=>'loginForm'))}}
+            <input name="token" type="hidden" value={{ $request->token  }} />
             <div class="form-group">
                 {{Form::label('email',__('Email Address'),array('class'=>'form-label'))}}
                 {{Form::text('email',null,array('class'=>'form-control','placeholder'=>__('Enter Your Email')))}}
@@ -47,6 +48,14 @@
                 <button class="btn btn-primary" type="submit">{{__('Update Password')}}</button>
             </div>
         {{Form::close()}}
-    </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 @endsection
