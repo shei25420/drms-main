@@ -106,7 +106,7 @@ class DocumentController extends Controller
                 if ($user->awsCustomer) {
                     AwsUsage::create([
                         'subscription_id' => $user->subscription,
-                        'aws_customer_id' => $user->aws_customer_id,
+                        'aws_customer_id' => $user->awsCustomer->id,
                         'dimension' => 'document',
                         'usage' => 1
                     ]);
