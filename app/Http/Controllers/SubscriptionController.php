@@ -21,7 +21,7 @@ class SubscriptionController extends Controller
     {
         if (\Auth::user()->type == 'super admin' || \Auth::user()->type == 'admin') {
             $subscriptions = Subscription::where('aws_plan', false)->get();
-
+            dd($subscriptions);
             return view('subscription.index', compact('subscriptions'));
         } else {
             return redirect()->back()->with('error', __('Permission Denied!'));
