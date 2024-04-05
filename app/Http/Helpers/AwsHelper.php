@@ -11,9 +11,9 @@ use App\Models\Subscription;
 class AwsHelper {
     public static function handleActiveSubscription (string $awsCustomerId, string $dimension, string $expiryDate, int $quantity)
     {
+        if ($dimension === "Intermediate") $dimension = "Standard";
         $subscription = Subscription::where('name', $dimension)->first();
         if (!$subscription) throw new Error("Could not find a package with provided dimensions: ".$dimension);
-        
 
         return AwsSubscription::create([
             'subscription_id' => $subscription->id,
