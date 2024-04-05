@@ -50,7 +50,7 @@ class AwsMarketplaceController extends Controller
             }
 
             foreach ($entitlement_results['Entitlements'] as $entitlement) {
-                AwsHelper::handleActiveSubscription($customer_results['CustomerIdentifier'], $entitlement['Dimension'], $entitlement['ExpirationDate'], $entitlement['Value']['IntegerValue'] ?? 1);
+                AwsHelper::handleActiveSubscription($customer_results['CustomerIdentifier'], $entitlement['Dimension'], $entitlement['ExpirationDate'], $entitlement['Value']['IntegerValue']);
             }
 
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
@@ -72,16 +72,6 @@ class AwsMarketplaceController extends Controller
             //Generate new password
             $password = bin2hex(random_bytes(8));
 
-            //Create New User
-            $user = User::create([
-                'name' => $name,
-                'email' => $request->email,
-                'password' => Hash::make($password),
-                'type' => 'admin',
-                'lang' => 'english',
-                'email_verified_at' => now()
-            ]);
-
             //Iterate And Assign Subscriptions To User
             $sub_id = null;
             $expiry_date = null;
@@ -101,11 +91,19 @@ class AwsMarketplaceController extends Controller
                 $expiry_date = $subscription->expiry_date;
             }
 
-            $user->user_usage = $total_user_usage;
-            $user->document_usage = $total_document_usage;
-            $user->subscription = $sub_id;
-            $user->subscription_expire_date = $expiry_date;
-            $user->save();
+            //Create New User
+            $user = User::create([
+                'name' => $name,
+                'email' => $request->email,
+                'password' => Hash::make($password),
+                'type' => 'admin',
+                'lang' => 'english',
+                'email_verified_at' => now(),
+                "user_usage" => $total_user_usage,
+                "document_usage" => $total_document_usage,
+                "subscription" => $sub_id,
+                "subscription_expire_date" => $expiry_date
+            ]);
 
             event(new Registered($user));
             $role_r = Role::findByName('owner');
@@ -120,10 +118,6 @@ class AwsMarketplaceController extends Controller
                 'user_id' => $user->id,
                 'customer_id' => $stripe_customer->id,
             ]);
-
-            event(new Registered($user));
-            $role_r = Role::findByName('owner');
-            $user->assignRole($role_r);
             // Auth::login($user);
 
             Mail::to($user)->send(new AWSCustomerCreated($password));
