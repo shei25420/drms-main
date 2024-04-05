@@ -50,8 +50,16 @@ class AwsMarketplaceController extends Controller
                 return redirect()->back()->with('error', 'Could not find an active subscription. If you already registered please try again');    
             }
 
+            //Create Aws Customer First
+            $aws_customer = AwsCustomer::where('customer_id', $customer_results['CustomerIdentifier'])->first();
+            if ($aws_customer) throw new Error("Aws Account Already Set Up");
+
+            $aws_customer = AwsCustomer::create([
+                'customer_id' => $customer_results['CustomerIdentifier'],
+            ]);
+
             foreach ($entitlement_results['Entitlements'] as $entitlement) {
-                AwsHelper::handleActiveSubscription($customer_results['CustomerIdentifier'], $entitlement['Dimension'], $entitlement['ExpirationDate'], $entitlement['Value']['IntegerValue']);
+                AwsHelper::handleActiveSubscription($aws_customer->id, $entitlement['Dimension'], $entitlement['ExpirationDate'], $entitlement['Value']['IntegerValue']);
             }
 
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);

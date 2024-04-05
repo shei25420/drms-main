@@ -9,20 +9,15 @@ use App\Models\AwsCustomer;
 use App\Models\Subscription;
 
 class AwsHelper {
-    public static function handleActiveSubscription (string $customerId, string $dimension, string $expiryDate, int $quantity)
+    public static function handleActiveSubscription (string $awsCustomerId, string $dimension, string $expiryDate, int $quantity)
     {
         $subscription = Subscription::where('name', $dimension)->first();
         if (!$subscription) throw new Error("Could not find a package with provided dimensions");
         
-        $aws_customer = AwsCustomer::where('customer_id', $customerId)->first();
-        if ($aws_customer) throw new Error("Aws Account Already Set Up");
 
-        $aws_customer = AwsCustomer::create([
-            'customer_id' => $customerId,
-        ]);
         return AwsSubscription::create([
             'subscription_id' => $subscription->id,
-            'aws_customer_id' => $aws_customer->id,
+            'aws_customer_id' => $awsCustomerId,
             'quantity' => $quantity,
             'expiry_date' => $expiryDate
         ]);
