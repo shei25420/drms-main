@@ -20,7 +20,7 @@ class SubscriptionController extends Controller
     public function index()
     {
         if (\Auth::user()->type == 'super admin' || \Auth::user()->type == 'admin') {
-            $subscriptions = Subscription::get();
+            $subscriptions = Subscription::where('aws_plan', false)->get();
 
             return view('subscription.index', compact('subscriptions'));
         } else {
