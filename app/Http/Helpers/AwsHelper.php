@@ -12,7 +12,7 @@ class AwsHelper {
     public static function handleActiveSubscription (string $awsCustomerId, string $dimension, string $expiryDate, int $quantity)
     {
         $subscription = Subscription::where('name', $dimension)->first();
-        if (!$subscription) throw new Error("Could not find a package with provided dimensions");
+        if (!$subscription) throw new Error("Could not find a package with provided dimensions: ".$dimension);
         
 
         return AwsSubscription::create([
