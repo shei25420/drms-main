@@ -40,7 +40,6 @@ class AwsMarketplaceController extends Controller
             
             $customer_results = \app(Aws::class)->resolveCustomer($request['x-amzn-marketplace-token']);
 
-            dd($customer_results['CustomerIdentifier']);
             if (!$customer_results || !isset($customer_results['CustomerIdentifier'])) {
                 throw new Exception("Error resolving customer");
             }
@@ -57,6 +56,7 @@ class AwsMarketplaceController extends Controller
 
             return redirect('/aws/register?customer_id='.$customer_results['CustomerIdentifier']);
         } catch (\Throwable $th) {
+            dd($th);
             return redirect('/login')->with('error', $th->getMessage());
         }
     }
