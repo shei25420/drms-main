@@ -90,7 +90,7 @@ class AwsMarketplaceController extends Controller
             $total_user_usage = 0;
 
             foreach ($aws_customer->aws_subscriptions as $subscription) {
-                $subscriptionModel = Subscription::findOrFail($subscription->id);
+                $subscriptionModel = Subscription::findOrFail($subscription->subscription_id);
                 $document_usage = $subscription->quantity > 1 ? -($subscriptionModel->total_document * $subscription->quantity) : 0;
                 $total_document_usage += $document_usage;
 
