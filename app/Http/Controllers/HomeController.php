@@ -55,7 +55,7 @@ class HomeController extends Controller
                 header('location:install');
                 die;
             } else {
-                $subscriptions = Subscription::get();
+                $subscriptions = Subscription::where('aws_plan', false)->get();
                 return view('home.index', compact('subscriptions'));
             }
 
