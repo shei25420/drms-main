@@ -134,7 +134,6 @@ class AwsMarketplaceController extends Controller
             return redirect()->back()->with('success', 'Please check you email for account information');
         } catch (\Throwable $th) {
             //throw $th;
-                dd($th);
 //            dd($th->getMessage(), $th->getCode());
             return redirect()->back()->with('error', 'Something went wrong, please try again later.');
         }
