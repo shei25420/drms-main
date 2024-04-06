@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Error;
 use Exception;
 use App\Models\User;
 use App\Http\Services\Aws;
